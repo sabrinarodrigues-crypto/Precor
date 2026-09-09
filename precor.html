@@ -1,0 +1,2813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PRECOR">
+<title>PRECOR — Prevenção, Comunicação e Resposta a Situações de Risco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#7d2438;
+    --maroon-dark:#5e1b2a;
+    --maroon-darker:#4a1521;
+    --maroon-soft:#fbebee;
+    --maroon-soft-2:#f6dde1;
+    --bg:#ffffff;
+    --card:#ffffff;
+    --border:#e1e3e8;
+    --border-strong:#d8dbe1;
+    --text:#1c1f26;
+    --text-muted:#667085;
+    --text-dim:#9aa1ac;
+    --red:#c22a3a;      --red-bg:#fce6e8;
+    --orange:#c2650f;   --orange-bg:#fdefdf;
+    --amber:#a8790a;    --amber-bg:#fdf3d8;
+    --green:#1f8b4d;    --green-bg:#e6f6ec;
+    --blue:#2f5fd1;     --blue-bg:#e9eefc;
+    --teal:#12806f;     --teal-bg:#e2f5f1;
+    --font-display:'Poppins',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+    --radius:14px;
+    --radius-sm:10px;
+    --topbar-h:64px;
+    --sidebar-w:280px;
+    --shadow-card:0 1px 3px rgba(20,20,30,.06), 0 2px 14px rgba(20,20,30,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#ffffff;color-scheme:light;height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:14.5px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  #app{min-height:100vh;min-height:100dvh;background:var(--bg);}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;color:var(--text);}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;}
+  ::selection{background:var(--maroon-soft-2);}
+
+  .muted{color:var(--text-muted);}
+  .dim{color:var(--text-dim);}
+  .mono{font-family:var(--font-mono);}
+  .hidden{display:none !important;}
+
+  .btn{
+    border:1.5px solid var(--border-strong);
+    background:#fff;
+    color:var(--text);
+    padding:11px 18px;
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    font-weight:600;
+    font-family:var(--font-display);
+    transition:border-color .15s, background .15s, transform .05s;
+  }
+  .btn:hover{border-color:var(--maroon);background:var(--maroon-soft);}
+  .btn:active{transform:scale(.98);}
+  .btn:focus-visible{outline:2px solid var(--maroon);outline-offset:2px;}
+  .btn-primary{background:#a24a5c;border-color:#a24a5c;color:#fff;}
+  .btn-primary:hover{background:#8f3d4f;border-color:#8f3d4f;}
+  .btn-maroon{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+  .btn-maroon:hover{background:var(--maroon-dark);border-color:var(--maroon-dark);}
+  .btn-ghost{background:transparent;border-color:transparent;color:var(--text-muted);}
+  .btn-ghost:hover{color:var(--maroon);background:var(--maroon-soft);}
+  .btn-block{width:100%;}
+  .btn-lg{padding:15px 20px;font-size:15px;}
+  .btn-sm{padding:7px 13px;font-size:12.5px;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-link{background:none;border:none;color:var(--maroon);font-weight:600;font-size:12.5px;padding:0;}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:4px 11px;border-radius:100px;
+    font-size:11.5px;font-weight:700;font-family:var(--font-display);
+    white-space:nowrap;
+  }
+  .badge-baixo{background:var(--teal-bg);color:var(--teal);}
+  .badge-medio{background:var(--amber-bg);color:var(--amber);}
+  .badge-alto{background:var(--orange-bg);color:var(--orange);}
+  .badge-critico{background:var(--red-bg);color:var(--red);}
+  .badge-normal{background:var(--teal-bg);color:var(--teal);}
+  .badge-atencao{background:var(--amber-bg);color:var(--amber);}
+  .badge-anormal{background:var(--orange-bg);color:var(--orange);}
+  .badge-registrada, .badge-encaminhada{background:var(--blue-bg);color:var(--blue);}
+  .badge-ematendimento{background:var(--amber-bg);color:var(--amber);}
+  .badge-resolvida{background:var(--teal-bg);color:var(--teal);}
+  .badge-encerrada{background:var(--green-bg);color:var(--green);}
+  .badge-novo{background:var(--maroon);color:#fff;}
+  .badge-outline{background:#fff;border:1.5px solid var(--border-strong);color:var(--text-muted);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-card);
+  }
+  .panel-pad{padding:22px;}
+
+  /* ---------- Login ---------- */
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 18px;background:var(--bg);}
+  .login-card{width:100%;max-width:400px;}
+  .login-logo-row{display:flex;align-items:center;gap:13px;margin-bottom:34px;}
+  .brand-mark{
+    width:52px;height:52px;border-radius:14px;background:var(--maroon);
+    display:flex;align-items:center;justify-content:center;flex:none;color:#fff;
+  }
+  .brand-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text);letter-spacing:.3px;}
+  .login-card h1{font-size:clamp(24px,6vw,29px);margin-bottom:8px;}
+  .login-card>.muted{display:block;margin-bottom:30px;font-size:14.5px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:7px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+  .input-icon{position:relative;}
+  .input-icon > svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none;}
+  .input-icon input, .field select{
+    width:100%;background:#fff;border:1.5px solid var(--border-strong);
+    color:var(--text);padding:13px 15px 13px 44px;border-radius:12px;font-size:14.5px;
+  }
+  .field select{padding-left:15px;}
+  .input-icon input:focus, .field select:focus{border-color:var(--maroon);}
+  .eye-toggle{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);padding:5px;border-radius:6px;pointer-events:auto;}
+  .eye-toggle:hover{color:var(--maroon);background:var(--maroon-soft);}
+  .login-error{color:var(--red);font-size:12.5px;margin:-6px 0 14px;min-height:1em;}
+  .login-help-link{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text-muted);font-size:13px;margin-top:18px;background:none;border:none;width:100%;font-weight:600;}
+  .login-help-link:hover{color:var(--maroon);}
+  .demo-panel{margin-top:16px;border-top:1px solid var(--border);padding-top:16px;}
+  .demo-list{display:flex;flex-direction:column;gap:8px;}
+  .demo-card{
+    display:flex;align-items:center;gap:12px;text-align:left;
+    border:1.5px solid var(--border-strong);background:#fff;border-radius:12px;padding:11px 13px;color:var(--text);
+  }
+  .demo-card:hover{border-color:var(--maroon);}
+  .demo-card.active{border-color:var(--maroon);background:var(--maroon-soft);}
+  .demo-avatar{width:36px;height:36px;border-radius:50%;background:var(--maroon-soft-2);color:var(--maroon);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13px;flex:none;}
+  .demo-card b{display:block;font-size:13.5px;}
+  .demo-card span{font-size:11.5px;color:var(--text-muted);}
+  .login-disclaimer{margin-top:26px;font-size:11.5px;color:var(--text-dim);text-align:center;line-height:1.5;}
+
+  /* ---------- Shell / Topbar / Sidebar ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:#fff;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:40;gap:10px;
+  }
+  .topbar-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
+  .hamburger{background:none;border:none;color:var(--text);padding:6px;display:flex;flex:none;}
+  .topbar h2{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .topbar-actions{display:flex;align-items:center;gap:8px;flex:none;}
+  .icon-btn{
+    width:40px;height:40px;border-radius:11px;border:1.5px solid var(--border-strong);background:#fff;
+    display:flex;align-items:center;justify-content:center;color:var(--text);position:relative;flex:none;
+  }
+  .icon-btn:hover{border-color:var(--maroon);color:var(--maroon);}
+  .icon-btn.maroon{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+  .icon-btn.maroon:hover{background:var(--maroon-dark);}
+  .count-pill{
+    position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:700;
+    min-width:18px;height:18px;border-radius:100px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #fff;
+  }
+
+  .shell{padding-top:var(--topbar-h);min-height:100vh;}
+  .backdrop{position:fixed;inset:0;background:rgba(20,10,14,.45);z-index:45;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .backdrop.show{opacity:1;pointer-events:auto;}
+
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:var(--maroon-dark);
+    color:#fff;z-index:50;display:flex;flex-direction:column;
+    transform:translateX(-100%);transition:transform .22s ease, width .18s ease;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-head{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.12);gap:8px;}
+  .sidebar-head .brand-mark{background:rgba(255,255,255,.14);width:42px;height:42px;border-radius:11px;flex:none;}
+  .sidebar-brand-text{display:flex;gap:11px;align-items:center;min-width:0;}
+  .sidebar-brand-text b{display:block;font-family:var(--font-display);font-size:17px;font-weight:700;white-space:nowrap;}
+  .sidebar-brand-text span{display:block;font-size:10.5px;color:rgba(255,255,255,.65);margin-top:2px;line-height:1.35;max-width:172px;}
+  .sidebar-close{background:none;border:none;color:rgba(255,255,255,.8);padding:4px;flex:none;}
+  .sidebar-collapse-btn{display:none;background:none;border:none;color:rgba(255,255,255,.75);padding:6px;flex:none;border-radius:8px;}
+  .sidebar-collapse-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
+  .sidebar-section-label{padding:16px 20px 6px;font-size:11px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase;white-space:nowrap;overflow:hidden;}
+  .nav{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:10px;}
+  .nav-item{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    padding:12px 20px;color:rgba(255,255,255,.85);font-size:14.5px;font-weight:500;background:none;border:none;
+  }
+  .nav-item:hover{background:rgba(255,255,255,.06);}
+  .nav-item.active{background:rgba(255,255,255,.14);color:#fff;font-weight:700;}
+  .nav-item svg{flex:none;opacity:.9;}
+  .nav-item span.nav-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .nav-badge{margin-left:auto;background:#e05a71;color:#fff;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:100px;flex:none;}
+  .sidebar-foot{border-top:1px solid rgba(255,255,255,.12);padding:16px 20px;display:flex;align-items:center;gap:12px;}
+  .sf-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13.5px;flex:none;}
+  .sf-meta{flex:1;min-width:0;}
+  .sf-meta b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sf-meta span{display:block;font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sf-logout{background:none;border:none;color:rgba(255,255,255,.75);padding:6px;flex:none;}
+  .sf-logout:hover{color:#fff;}
+
+  /* Menu minimizado (desktop) — mostra só ícones para ganhar espaço de tela */
+  @media (min-width:900px){
+    .sidebar-close{display:none;}
+    .sidebar-collapse-btn{display:flex;}
+    .sidebar.collapsed{width:76px;}
+    .sidebar.collapsed .sidebar-head{justify-content:center;padding:22px 0 18px;}
+    .sidebar.collapsed .sidebar-brand-text span{display:none;}
+    .sidebar.collapsed .sidebar-brand-text b{display:none;}
+    .sidebar.collapsed .sidebar-collapse-btn{transform:rotate(180deg);}
+    .sidebar.collapsed .sidebar-section-label{display:none;}
+    .sidebar.collapsed .nav-item{justify-content:center;padding:13px 0;gap:0;position:relative;}
+    .sidebar.collapsed .nav-item .nav-label{display:none;}
+    .sidebar.collapsed .nav-badge{
+      display:block;position:absolute;top:8px;right:22px;width:9px;height:9px;min-width:0;
+      padding:0;font-size:0;line-height:0;border-radius:50%;border:2px solid var(--maroon-dark);
+    }
+    .sidebar.collapsed .sidebar-foot{justify-content:center;padding:16px 8px;}
+    .sidebar.collapsed .sf-meta, .sidebar.collapsed .sf-logout{display:none;}
+  }
+
+  .main{padding:20px 18px 60px;max-width:1080px;margin:0 auto;animation:main-fade-in .22s ease;}
+  @keyframes main-fade-in{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){ .main{animation:none;} }
+  .page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap;}
+  .page-head h1{font-size:clamp(19px,5vw,23px);}
+  .page-head .muted{font-size:13px;margin-top:3px;}
+  .breadcrumb{margin-bottom:10px;}
+  .breadcrumb button{background:none;border:none;color:var(--text-muted);font-size:13px;font-weight:600;padding:0;}
+  .breadcrumb button:hover{color:var(--maroon);}
+
+  /* ---------- Banner critical ---------- */
+  .crit-banner{
+    display:flex;align-items:flex-start;gap:14px;background:var(--maroon);color:#fff;
+    border-radius:var(--radius);padding:15px 18px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  .crit-banner .cb-icon{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:none;}
+  .crit-banner b{display:block;font-size:14px;}
+  .crit-banner span{display:block;font-size:12.5px;color:rgba(255,255,255,.85);margin-top:2px;}
+  .crit-banner .cb-time{margin-left:auto;font-size:11.5px;color:rgba(255,255,255,.7);flex:none;}
+  @media (max-width:480px){
+    .crit-banner .cb-time{margin-left:52px;}
+  }
+
+  /* ---------- KPI ---------- */
+  .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:22px;}
+  .kpi{padding:16px 16px;border-left:4px solid var(--border-strong);border-radius:12px;}
+  .kpi .l{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-muted);}
+  .kpi .n{font-family:var(--font-display);font-size:clamp(22px,6vw,30px);font-weight:700;margin:6px 0 2px;}
+  .kpi .s{font-size:12px;color:var(--text-dim);}
+  .kpi.amber{border-left-color:var(--amber);}
+  .kpi.orange{border-left-color:var(--orange);}
+  .kpi.green{border-left-color:var(--green);}
+  .kpi.blue{border-left-color:var(--blue);}
+  .kpi.red{border-left-color:var(--red);}
+  .kpi.teal{border-left-color:var(--teal);}
+
+  .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-title h3{font-size:16px;}
+
+  .occ-card{padding:16px;margin-bottom:10px;cursor:pointer;transition:transform .08s, border-color .15s;}
+  .occ-card:active{transform:scale(.985);}
+  .occ-card:hover{border-color:var(--maroon);}
+  .occ-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+  .occ-top b{min-width:0;overflow-wrap:break-word;}
+  .occ-top b{font-size:14.5px;font-weight:700;line-height:1.35;}
+  .occ-tags{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;align-items:center;}
+  .occ-meta{font-size:12px;color:var(--text-dim);margin-top:8px;}
+
+  /* ---------- Search / filters ---------- */
+  .search-box{position:relative;margin-bottom:14px;}
+  .search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-dim);}
+  .search-box input{width:100%;padding:12px 14px 12px 42px;border-radius:12px;border:1.5px solid var(--border-strong);background:#fff;font-size:14px;}
+  .search-box input:focus{border-color:var(--maroon);}
+  .chip-row{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -18px 10px;padding:2px 18px 6px;scrollbar-width:none;}
+  .chip-row::-webkit-scrollbar{display:none;}
+  @media (min-width:900px){ .chip-row{flex-wrap:wrap;overflow-x:visible;margin:0 0 10px;padding:0;} }
+  .chip{
+    border:1.5px solid var(--border-strong);background:#fff;color:var(--text-muted);
+    padding:8px 15px;border-radius:100px;font-size:13px;font-weight:600;font-family:var(--font-display);
+    flex:none;white-space:nowrap;
+  }
+  .chip.active{border-color:var(--maroon);background:var(--maroon-soft);color:var(--maroon);}
+  .results-count{font-size:12.5px;color:var(--text-dim);margin:4px 0 14px;}
+
+  /* ---------- Form (sheet style) ---------- */
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+  .sheet-head h1{font-size:22px;}
+  .sheet-close{background:none;border:none;color:var(--text-dim);padding:4px;}
+  .form-section{margin-bottom:22px;}
+  .form-section > label, .field-label{display:block;font-size:13.5px;font-weight:700;font-family:var(--font-display);margin-bottom:10px;}
+  .option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .option-box{
+    border:1.5px solid var(--border-strong);background:#fff;border-radius:12px;padding:14px 14px;
+    text-align:left;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.35;
+  }
+  .option-box.selected{border-color:var(--maroon);background:var(--maroon-soft);color:var(--maroon);}
+  .crit-row{display:flex;gap:8px;}
+  .crit-box{flex:1;border:1.5px solid var(--border-strong);background:#fff;border-radius:12px;padding:12px 6px;text-align:center;font-size:13px;font-weight:700;color:var(--text-muted);font-family:var(--font-display);}
+  .crit-box.sel-baixo.selected{border-color:var(--teal);background:var(--teal-bg);color:var(--teal);}
+  .crit-box.sel-medio.selected{border-color:var(--amber);background:var(--amber-bg);color:var(--amber);}
+  .crit-box.sel-alto.selected{border-color:var(--orange);background:var(--orange-bg);color:var(--orange);}
+  .crit-box.sel-critico.selected{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .form-grid-2{display:grid;grid-template-columns:1fr;gap:14px;}
+  input[type=text]:not(.input-icon input), input[type=datetime-local], input[type=date], .form-section input, .form-section select{
+    width:100%;background:#fff;border:1.5px solid var(--border-strong);color:var(--text);
+    padding:12px 14px;border-radius:12px;font-size:14px;
+  }
+  textarea{width:100%;resize:vertical;min-height:88px;background:#fff;border:1.5px solid var(--border-strong);color:var(--text);padding:12px 14px;border-radius:12px;font-size:14px;}
+  input:focus, select:focus, textarea:focus{border-color:var(--maroon);outline:none;}
+  .form-actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;}
+  .form-actions .btn{flex:1;min-width:140px;}
+  @media (max-width:420px){
+    .form-actions{flex-direction:column;}
+    .form-actions .btn{width:100%;}
+  }
+  .dupcheck-box{margin-top:16px;padding:16px;border-radius:12px;background:var(--amber-bg);border:1.5px solid #f0dca6;}
+  .dupcheck-label{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--amber);font-size:13.5px;margin-bottom:6px;}
+  .dupcheck-box p{margin:0 0 12px;color:var(--text-muted);font-size:13px;line-height:1.5;}
+  .attach-row{margin-top:12px;}
+  .attach-btn{
+    display:inline-flex;align-items:center;gap:8px;border:1.5px dashed var(--border-strong);background:#fff;
+    color:var(--text-muted);padding:10px 14px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;
+  }
+  .attach-btn:hover{border-color:var(--maroon);color:var(--maroon);}
+  .attach-btn input{display:none;}
+  .attach-preview{position:relative;display:inline-block;margin-top:10px;}
+  .attach-preview img{max-width:100%;max-height:160px;border-radius:10px;border:1px solid var(--border);display:block;}
+  .attach-remove{
+    position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;
+    border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+  }
+  .history-image{max-width:220px;max-height:150px;border-radius:8px;border:1px solid var(--border);margin-top:6px;display:block;cursor:pointer;}
+
+  /* ---------- Notificações ativas (toast) ---------- */
+  #toast-root{position:fixed;top:14px;left:0;right:0;z-index:300;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 14px;}
+  .toast{
+    max-width:420px;width:100%;background:#fff;border-left:4px solid var(--blue);border-radius:10px;
+    box-shadow:0 8px 24px rgba(20,20,30,.18);padding:12px 14px;display:flex;gap:10px;align-items:flex-start;
+    opacity:0;transform:translateY(-14px);transition:opacity .22s ease, transform .22s ease;pointer-events:auto;
+  }
+  .toast.show{opacity:1;transform:translateY(0);}
+  .toast svg{flex:none;margin-top:1px;}
+  .toast-text{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+  .toast-critico{border-left-color:var(--red);}
+  .toast-critico svg{color:var(--red);}
+  .toast-sucesso{border-left-color:var(--teal);}
+  .toast-sucesso svg{color:var(--teal);}
+  .toast-info{border-left-color:var(--blue);}
+  .toast-info svg{color:var(--blue);}
+  .toast-alerta{border-left-color:var(--orange);}
+  .toast-alerta svg{color:var(--orange);}
+  @media (min-width:900px){ #toast-root{left:auto;right:20px;align-items:flex-end;} .toast{width:360px;} }
+
+  .field-error{color:var(--red);font-size:12.5px;font-weight:600;margin:-6px 0 12px;}
+  .login-notice{
+    display:flex;gap:10px;align-items:flex-start;background:var(--blue-bg);border:1px solid #c7d7f5;color:#2a4a86;
+    padding:12px 14px;border-radius:12px;font-size:12px;line-height:1.5;margin-bottom:24px;
+  }
+  .login-notice svg{flex:none;color:var(--blue);margin-top:1px;}
+  .attach-loading{font-size:12px;color:var(--text-muted);margin-top:10px;}
+
+  .toggle-row{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-align:left;
+    border:1.5px solid var(--border-strong);border-radius:12px;padding:14px;background:#fff;
+  }
+  .toggle-row:hover{border-color:var(--maroon);}
+  .toggle-switch{width:44px;height:26px;border-radius:100px;background:var(--border-strong);position:relative;flex:none;transition:background .15s;}
+  .toggle-switch.on{background:var(--maroon);}
+  .toggle-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .toggle-switch.on .toggle-knob{left:21px;}
+
+  .suggestion-box{border-left:4px solid var(--maroon);}
+  .suggestion-tag{background:var(--maroon-soft);color:var(--maroon);}
+
+  .trend-line{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;margin-top:8px;}
+  .trend-bad{color:var(--orange);}
+  .trend-good{color:var(--teal);}
+  .trend-stable{color:var(--text-dim);font-weight:600;}
+
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-label{width:38%;flex:none;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .bar-track{flex:1;height:10px;background:var(--border);border-radius:100px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:100px;transition:width .3s ease;}
+  .bar-count{width:26px;flex:none;text-align:right;font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--text-muted);}
+  @media (max-width:480px){ .bar-label{width:34%;font-size:11.5px;} }
+
+  .profile-switcher{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:151;
+    background:#fff;border-radius:16px;width:min(360px, calc(100vw - 40px));max-height:80vh;overflow-y:auto;
+    box-shadow:0 20px 50px rgba(20,10,14,.35);
+  }
+  .profile-switcher-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 18px 6px;}
+  .profile-switcher-head b{font-size:15px;font-family:var(--font-display);}
+
+  .global-search-panel{
+    position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:151;
+    background:#fff;border-radius:16px;width:min(480px, calc(100vw - 32px));max-height:70vh;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(20,10,14,.35);
+  }
+  .global-search-input-row{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);flex:none;}
+  .global-search-input-row svg{color:var(--text-dim);flex:none;}
+  .global-search-input-row input{flex:1;border:none;font-size:15px;outline:none;background:none;color:var(--text);}
+  .global-search-results{overflow-y:auto;padding:6px 8px;}
+  .search-group-label{padding:10px 10px 4px;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-dim);}
+  .search-result-item{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:none;
+    padding:10px;border-radius:10px;color:var(--text);
+  }
+  .search-result-item:hover{background:var(--maroon-soft);}
+  .search-result-item svg{color:var(--maroon);flex:none;}
+  .search-result-item div{flex:1;min-width:0;}
+  .search-result-item b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .search-result-item span{display:block;font-size:11px;color:var(--text-dim);}
+
+  .onboarding-card{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:161;
+    background:#fff;border-radius:16px;width:min(340px, calc(100vw - 40px));padding:24px;
+    box-shadow:0 20px 50px rgba(20,10,14,.35);
+  }
+  .onboarding-dots{display:flex;gap:6px;margin-bottom:16px;}
+  .onboarding-dot{width:6px;height:6px;border-radius:50%;background:var(--border-strong);}
+  .onboarding-dot.active{background:var(--maroon);width:18px;border-radius:100px;}
+
+  .confirm-box{text-align:center;padding:52px 24px;}
+  .confirm-icon{width:66px;height:66px;border-radius:50%;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+  .protocol{font-family:var(--font-mono);font-size:27px;color:var(--maroon);margin:12px 0 4px;font-weight:600;}
+
+  /* ---------- Timeline ---------- */
+  /* Mobile: lista vertical (dot + linha à esquerda, rótulo à direita) — evita
+     5 rótulos espremidos numa linha só e colando um no outro. */
+  .timeline{display:flex;flex-direction:column;margin:6px 0 4px;}
+  .tl-step{flex:none;display:flex;align-items:flex-start;gap:12px;text-align:left;position:relative;padding-bottom:20px;}
+  .tl-step:last-child{padding-bottom:0;}
+  .tl-dot{width:15px;height:15px;border-radius:50%;background:#fff;border:2.5px solid var(--border-strong);position:relative;z-index:1;flex:none;margin-top:1px;}
+  .tl-step.done .tl-dot{background:var(--green);border-color:var(--green);}
+  .tl-step.current .tl-dot{background:var(--maroon);border-color:var(--maroon);box-shadow:0 0 0 4px var(--maroon-soft);}
+  .tl-step::before{content:"";position:absolute;left:6.5px;top:16px;width:2px;height:calc(100% - 6px);background:var(--border-strong);z-index:0;}
+  .tl-step:last-child::before{display:none;}
+  .tl-step.done::before{background:var(--green);}
+  .tl-step span{font-size:13px;color:var(--text-dim);font-weight:600;line-height:1.4;}
+  .tl-step.current span{color:var(--maroon);}
+  .tl-step.done span{color:var(--green);}
+
+  @media (min-width:680px){
+    .timeline{flex-direction:row;}
+    .tl-step{flex:1;text-align:center;display:block;padding-bottom:0;}
+    .tl-dot{margin:0 auto 8px;}
+    .tl-step::before{top:6.5px;left:-50%;width:100%;height:2px;}
+    .tl-step:first-child::before{display:none;}
+    .tl-step:last-child::before{display:block;}
+    .tl-step span{font-size:10.8px;}
+  }
+
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+  .dg-item span{display:block;font-size:11px;color:var(--text-dim);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+  .dg-item b{font-size:14px;font-weight:600;}
+
+  .log-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+  .log-item:last-child{border-bottom:none;}
+  .log-dot{width:8px;height:8px;border-radius:50%;background:var(--maroon);margin-top:6px;flex:none;}
+  .log-item b{font-size:13px;display:block;}
+  .log-item span{font-size:11.5px;color:var(--text-dim);}
+
+  /* ---------- Alerts ---------- */
+  .tab-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .alert-card{border-left:4px solid var(--border-strong);padding:16px;margin-bottom:12px;}
+  .alert-card.critico{border-left-color:var(--red);}
+  .alert-card.alto{border-left-color:var(--orange);}
+  .alert-card.medio{border-left-color:var(--amber);}
+  .alert-card.baixo{border-left-color:var(--teal);}
+  .alert-tags{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap;}
+  .alert-card b.a-title{display:block;font-size:15px;margin-bottom:6px;}
+  .alert-card p{margin:0 0 10px;color:var(--text-muted);font-size:13.5px;line-height:1.5;}
+  .alert-meta-row{display:flex;gap:12px;font-size:11.5px;color:var(--text-dim);margin-bottom:12px;}
+  .alert-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  @media (max-width:420px){
+    .alert-actions{flex-direction:column;}
+    .alert-actions .btn{width:100%;}
+  }
+
+  /* ---------- Procedures ---------- */
+  .proc-card{padding:18px;margin-bottom:12px;cursor:pointer;display:flex;gap:14px;transition:transform .08s, border-color .15s;}
+  .proc-card:active{transform:scale(.985);}
+  .proc-card:hover{border-color:var(--maroon);}
+  .proc-icon{width:44px;height:44px;border-radius:11px;background:var(--maroon-soft);color:var(--maroon);display:flex;align-items:center;justify-content:center;flex:none;}
+  .proc-body{flex:1;min-width:0;}
+  .proc-cat-tag{display:inline-block;background:var(--maroon-soft);color:var(--maroon);font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;margin-bottom:7px;}
+  .proc-body h4{font-size:15.5px;margin-bottom:6px;}
+  .proc-body p{color:var(--text-muted);font-size:13px;margin:0 0 10px;line-height:1.45;}
+  .proc-meta-row{display:flex;gap:14px;font-size:11.5px;color:var(--text-dim);margin-bottom:12px;flex-wrap:wrap;}
+  .step-list{counter-reset:step;padding:0;list-style:none;margin:0;}
+  .step-list li{counter-increment:step;display:flex;gap:13px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.5;}
+  .step-list li:last-child{border-bottom:none;}
+  .step-list li::before{
+    content:counter(step);flex:none;width:26px;height:26px;border-radius:50%;background:var(--maroon-soft);
+    display:flex;align-items:center;justify-content:center;font-size:12.5px;font-family:var(--font-display);font-weight:700;color:var(--maroon);
+  }
+
+  /* ---------- Monitoring ---------- */
+  .exp-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-bg);color:var(--blue);padding:5px 12px;border-radius:100px;font-size:11.5px;font-weight:700;margin-bottom:16px;}
+  .sensor-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .sensor-card{padding:16px;border-left:4px solid var(--border-strong);}
+  .sensor-card.st-normal{border-left-color:var(--teal);}
+  .sensor-card.st-atencao{border-left-color:var(--amber);}
+  .sensor-card.st-anormal{border-left-color:var(--orange);}
+  .sensor-card.st-critico{border-left-color:var(--red);background:var(--red-bg);}
+  .sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;}
+  .sc-name{font-size:13.5px;font-weight:700;}
+  .sc-area{font-size:11.5px;color:var(--text-dim);}
+  .sc-val{font-family:var(--font-mono);font-size:clamp(22px,5vw,28px);font-weight:600;margin:4px 0;}
+  .sc-val-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
+  .sparkline{width:70px;height:24px;flex:none;margin-bottom:6px;}
+  .sc-range{font-size:11.5px;color:var(--text-dim);}
+  .scale{height:6px;border-radius:4px;background:var(--border);margin-top:10px;overflow:hidden;}
+  .scale > div{height:100%;}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{text-align:left;padding:11px 12px;color:var(--text-dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1.5px solid var(--border);font-weight:700;}
+  tbody td{padding:12px 12px;border-bottom:1px solid var(--border);}
+  tbody tr:hover{background:var(--maroon-soft);cursor:pointer;}
+  tbody tr:active{background:var(--maroon-soft-2);}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -18px;padding:0 18px;}
+  @media (min-width:900px){ .table-scroll{margin:0;padding:0;} }
+  .filters-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .filters-row select, .filters-row input{background:#fff;border:1.5px solid var(--border-strong);color:var(--text);padding:9px 11px;border-radius:10px;font-size:12.5px;flex:1 1 130px;min-width:0;}
+
+  /* Tabelas viram cartões empilhados em telas pequenas */
+  @media (max-width:680px){
+    .rtable thead{display:none;}
+    .rtable, .rtable tbody, .rtable tr, .rtable td{display:block;width:100%;}
+    .rtable{border:none;}
+    .rtable tr{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow-card);}
+    .rtable tr:hover{background:#fff;}
+    .rtable td{
+      border:none;padding:7px 0;display:flex;flex-direction:column;align-items:flex-start;
+      gap:2px;text-align:left;overflow-wrap:anywhere;word-break:break-word;
+    }
+    .rtable td::before{content:attr(data-label);font-weight:700;color:var(--text-dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;}
+    .rtable td > div{width:100%;}
+    .table-scroll{overflow-x:visible;margin:0;padding:0;}
+  }
+
+  .empty-state{text-align:center;padding:50px 20px;color:var(--text-dim);}
+
+  /* ---------- Emergência rápida (FAB + fluxo) ---------- */
+  .fab-emergency{
+    position:fixed;right:18px;bottom:22px;z-index:38;
+    background:#c81e34;color:#fff;border:none;border-radius:100px;
+    padding:15px 20px;display:flex;align-items:center;gap:9px;
+    font-family:var(--font-display);font-weight:700;font-size:14px;
+    box-shadow:0 8px 22px rgba(200,30,52,.4);
+  }
+  .fab-emergency::before{
+    content:"";position:absolute;inset:-4px;border-radius:100px;border:2px solid rgba(200,30,52,.5);
+    animation:fab-ping 2.2s infinite;
+  }
+  @keyframes fab-ping{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.18);opacity:0;}}
+  .fab-emergency span.fab-label{white-space:nowrap;}
+  @media (max-width:480px){ .fab-emergency span.fab-label{display:none;} .fab-emergency{padding:15px;} }
+
+  .emg-wrap{max-width:480px;margin:0 auto;}
+  .emg-head{text-align:center;margin-bottom:22px;}
+  .emg-head .emg-icon{
+    width:60px;height:60px;border-radius:50%;background:#fce7e9;color:#c81e34;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+  }
+  .emg-head h1{font-size:22px;}
+  .emg-head p{color:var(--text-muted);font-size:13.5px;margin-top:6px;}
+  .emg-tile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .emg-tile{
+    border:2px solid var(--border-strong);background:#fff;border-radius:16px;padding:22px 14px;
+    text-align:center;font-family:var(--font-display);font-weight:700;font-size:14.5px;color:var(--text);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .emg-tile:hover{border-color:#c81e34;background:#fdf1f2;}
+  .emg-tile svg{color:#c81e34;}
+  .emg-selected-tag{display:flex;align-items:center;gap:10px;background:#fdf1f2;color:#c81e34;padding:10px 14px;border-radius:12px;font-weight:700;font-size:13.5px;margin-bottom:20px;}
+  .emg-selected-tag button{margin-left:auto;background:none;border:none;color:#c81e34;font-weight:700;font-size:12.5px;}
+  .emg-big-input{width:100%;padding:18px 16px;font-size:17px;border-radius:14px;border:2px solid var(--border-strong);margin-bottom:14px;font-weight:600;}
+  .emg-big-input:focus{border-color:#c81e34;outline:none;}
+  .emg-submit{
+    width:100%;padding:20px;background:#c81e34;color:#fff;border:none;border-radius:14px;
+    font-family:var(--font-display);font-weight:700;font-size:17px;box-shadow:0 6px 16px rgba(200,30,52,.35);
+  }
+  .emg-submit:disabled{opacity:.45;}
+  .emg-cancel{display:block;margin:16px auto 0;background:none;border:none;color:var(--text-muted);font-weight:600;font-size:13px;}
+  .emg-confirm-icon{width:70px;height:70px;border-radius:50%;background:#fce7e9;color:#c81e34;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+  .emg-banner{
+    display:flex;align-items:center;gap:12px;background:#fdf1f2;border:1.5px solid #f6c3ca;color:#a3132a;
+    border-radius:12px;padding:13px 15px;margin-bottom:18px;font-size:13px;font-weight:600;
+  }
+  .emg-banner button{margin-left:auto;background:#c81e34;color:#fff;border:none;padding:9px 14px;border-radius:9px;font-weight:700;font-size:12.5px;font-family:var(--font-display);flex:none;}
+
+  @media (min-width:900px){
+    :root{--sidebar-w:272px;}
+    .hamburger{display:none;}
+    .sidebar{transform:translateX(0);position:fixed;}
+    .backdrop{display:none;}
+    .topbar{padding-left:calc(var(--sidebar-w) + 18px);}
+    .shell{padding-left:var(--sidebar-w);}
+    .main{padding:28px 34px 60px;max-width:1080px;}
+    .kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+    .form-grid-2{grid-template-columns:1fr 1fr;}
+    .sensor-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .sidebar{transition:none;}
+  }
+
+  /* ---------- Exportação em PDF (via impressão do navegador) ---------- */
+  .print-header{display:none;}
+  @media print{
+    .sidebar, .topbar, .backdrop, .fab-emergency, #toast-root, .profile-switcher,
+    .no-print, .form-actions, .dupcheck-box, .search-box, .chip-row, .tab-row,
+    .filters-row, .alert-actions{ display:none !important; }
+    .shell{padding-left:0 !important;padding-top:0 !important;}
+    .main{padding:12px !important;max-width:100% !important;}
+    body{background:#fff;}
+    .card{box-shadow:none !important;border:1px solid #ccc !important;break-inside:avoid;}
+    .print-header{
+      display:block !important;font-family:var(--font-body);font-size:11px;color:#555;
+      border-bottom:2px solid var(--maroon);padding-bottom:10px;margin-bottom:16px;
+    }
+    .print-header b{font-family:var(--font-display);font-size:15px;color:var(--maroon);}
+    .print-header span{display:block;margin-top:4px;line-height:1.5;}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   PRECOR — dados de demonstração e estado da aplicação
+   Referência: Unidade de Sarapuí — Universal Chemical
+   ========================================================= */
+
+const ICONS = {
+  shield:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 15.5 16 19 12 21C8 19 5 15.5 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  user:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="3.1" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 19.3C5.8 15.7 8.5 13.3 12 13.3C15.5 13.3 18.2 15.7 18.2 19.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  lock:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V7.5C8 5 9.8 3.2 12 3.2C14.2 3.2 16 5 16 7.5V10.5" stroke="currentColor" stroke-width="1.8"/></svg>',
+  eye:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12C4 7.5 7.8 5 12 5C16.2 5 20 7.5 22 12C20 16.5 16.2 19 12 19C7.8 19 4 16.5 2 12Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="2"/></svg>',
+  eyeOff:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3.5 4.5L20.5 19.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.7 6.3C10.4 6.1 11.2 6 12 6C16.2 6 20 8.5 22 12C21.4 13.1 20.6 14.1 19.7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 7.9C4.9 9 3.3 10.4 2 12C4 15.5 7.8 18 12 18C13.1 18 14.2 17.8 15.2 17.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.7 12.4C9.7 13.7 10.7 14.7 12 14.7C12.5 14.7 12.9 14.6 13.3 14.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14.2 12.9C14.4 12.6 14.5 12.3 14.5 12C14.5 10.7 13.5 9.7 12.2 9.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  help:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.6 9.3C9.9 8 11 7.2 12.3 7.4C13.5 7.6 14.4 8.6 14.3 9.8C14.2 11 13 11.4 12.4 12.2C12.1 12.6 12 13 12 13.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="16.3" r="0.9" fill="currentColor"/></svg>',
+  menu:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+  close:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+  plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  bell:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 4C9.5 4 7.8 6 7.8 8.5V12L6 15.5H18L16.2 12V8.5C16.2 6 14.5 4 12 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 18.5C10.3 19.5 11 20 12 20C13 20 13.7 19.5 14 18.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  bellLg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 4C9.5 4 7.8 6 7.8 8.5V12L6 15.5H18L16.2 12V8.5C16.2 6 14.5 4 12 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 18.5C10.3 19.5 11 20 12 20C13 20 13.7 19.5 14 18.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  home:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11L12 4L20 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V19C6 19.6 6.4 20 7 20H17C17.6 20 18 19.6 18 19V9.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  doc:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 8H16M8 12H16M8 16H12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  warn:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3L21 20H3L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10V14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="0.9" fill="currentColor"/></svg>',
+  book:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 4.5C5 3.7 5.7 3 6.5 3H18V20H6.5C5.7 20 5 19.3 5 18.5V4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 17.5C5 16.7 5.7 16 6.5 16H18" stroke="currentColor" stroke-width="1.8"/></svg>',
+  pulse:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 13H7L9.5 6L14 19L16.5 13H21" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+  list:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  people:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20C3.5 16.5 6 14.5 9 14.5C12 14.5 14.5 16.5 14.5 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="17.5" cy="8.5" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 20C15.5 17.2 17 15.5 19.3 15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  gearNav:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3V5.5M12 18.5V21M21 12H18.5M5.5 12H3M18 6L16.2 7.8M7.8 16.2L6 18M18 18L16.2 16.2M7.8 7.8L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  trendUp:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 17L10 11L14 15L20 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 7H20V13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  trendDown:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 7L10 13L14 9L20 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 17H20V11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  trendFlat:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 12H20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  soundOn:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10V14H8L13 18V6L8 10H4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16.5 9C17.5 10 18 11 18 12C18 13 17.5 14 16.5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M19 6.5C20.8 8.2 21.5 10 21.5 12C21.5 14 20.8 15.8 19 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  soundOff:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10V14H8L13 18V6L8 10H4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 9L20.5 15M20.5 9L16 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  swap:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 4L4 7L7 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 7H16C18.2 7 20 8.8 20 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 20L20 17L17 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 17H8C5.8 17 4 15.2 4 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  logout:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9 4H6C4.9 4 4 4.9 4 6V18C4 19.1 4.9 20 6 20H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15 8L20 12L15 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  check:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  search:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21L16.2 16.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  collapse:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  camera:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 8.5C4 7.4 4.9 6.5 6 6.5H8L9 4.5H15L16 6.5H18C19.1 6.5 20 7.4 20 8.5V17C20 18.1 19.1 19 18 19H6C4.9 19 4 18.1 4 17V8.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke="currentColor" stroke-width="1.7"/></svg>',
+  trash:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 7H19M9 7V5C9 4.4 9.4 4 10 4H14C14.6 4 15 4.4 15 5V7M7 7L8 19C8 19.6 8.4 20 9 20H15C15.6 20 16 19.6 16 19L17 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  info:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 11V16.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>',
+  bolt:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 15C6 10.6 8.7 7.5 12 7.5C15.3 7.5 18 10.6 18 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="15" width="16" height="4" rx="1.4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 4.2V6.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.2 5.4L8.6 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16.8 5.4L15.4 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  boltLg:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M6 15C6 10.6 8.7 7.5 12 7.5C15.3 7.5 18 10.6 18 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="15" width="16" height="4" rx="1.4" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 4.2V6.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7.2 5.4L8.6 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16.8 5.4L15.4 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  flame:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21C8.5 21 6 18.5 6 15C6 12 8 10.5 8.5 8C9 9.5 10 10 10.5 9C10.8 6.5 9.8 4.5 9.5 3C13 4.5 15.5 8 15 11.5C16.5 10.5 17 9 17 9C18 11 18 13 18 14C18 18 15.5 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  drop:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 6 11 6 15.5C6 19 8.7 21 12 21C15.3 21 18 19 18 15.5C18 11 12 3 12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  run:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="14" cy="5" r="1.8" stroke="currentColor" stroke-width="1.6"/><path d="M9 20L12 15L10 12L11 8L15 9L17 13L20 14M10 12L6 13.5L4 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  gear:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3V5.5M12 18.5V21M21 12H18.5M5.5 12H3M18 6L16.2 7.8M7.8 16.2L6 18M18 18L16.2 16.2M7.8 7.8L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  dots:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/></svg>',
+};
+
+const ROLE_LABELS = {
+  lideranca:'Liderança', brigadista:'Brigadista / Equipe de Emergência',
+  seguranca:'Segurança do Trabalho', setor:'Setor Responsável', admin:'Administrador / TI'
+};
+
+const ONBOARDING_CONTENT = {
+  lideranca:[
+    {title:'Registre riscos da sua área', text:'Use "Registrar Ocorrência" para relatar uma situação de risco. Se acionar a Brigada de Emergência, a resposta em campo já começa imediatamente.'},
+    {title:'Acompanhe só o que é seu', text:'"Ocorrências" e "Monitoramento" mostram apenas a área que você lidera — Produção, Tancagem etc., conforme seu cadastro.'},
+    {title:'Emergência é diferente', text:'O botão vermelho flutuante é um atalho separado para quando não há tempo de preencher o formulário completo.'},
+  ],
+  brigadista:[
+    {title:'Você é acionado por alerta', text:'A Central de Alertas mostra as ocorrências em que você foi chamado. Toque em "Confirmar e atender" para ir direto à ocorrência.'},
+    {title:'Sugestões automáticas', text:'Ao abrir uma ocorrência em que foi acionado, o PRECOR já sugere o procedimento da Biblioteca de Segurança mais adequado.'},
+    {title:'Marcar como resolvida', text:'Depois de controlar a situação em campo, descreva o que foi feito. A Segurança do Trabalho faz a confirmação final (duplo-check).'},
+  ],
+  seguranca:[
+    {title:'Visão geral da unidade', text:'"Gestão de Ocorrências" reúne tudo, com filtros e uma aba de Indicadores para acompanhar tendências.'},
+    {title:'Duplo-check de encerramento', text:'Quando uma ocorrência é marcada como resolvida, só você (ou o Admin) confirma o encerramento definitivo ou reabre.'},
+    {title:'Monitoramento preditivo', text:'Sensores fora do padrão geram alertas automáticos — inclusive antes de cruzar o limite, quando a tendência já aponta piora.'},
+  ],
+  setor:[
+    {title:'Só o que foi direcionado a você', text:'Ocorrências, alertas e sensores mostram apenas o que está sob a responsabilidade do seu setor.'},
+    {title:'Registre leituras', text:'Em "Monitoramento", você pode registrar manualmente uma leitura de campo do seu equipamento.'},
+  ],
+  admin:[
+    {title:'Administração fica por último', text:'Gestão de usuários, registro de logs (toda alteração do sistema) e de logins ficam reunidos ali.'},
+    {title:'Configuração da unidade', text:'Tipos de risco, áreas e sensores desta unidade — pensados para serem adaptáveis a outras organizações no futuro.'},
+    {title:'Visão total', text:'Como Admin, você enxerga tudo: ocorrências, monitoramento e biblioteca sem nenhuma restrição de escopo.'},
+  ],
+};
+function maybeShowOnboarding(role){
+  if(state.onboardingSeenRoles.includes(role)) return;
+  state.onboardingSeenRoles.push(role);
+  state.onboardingOpen = true;
+  state.onboardingStep = 0;
+}
+function onboardingNext(){
+  const total = ONBOARDING_CONTENT[state.user.role].length;
+  if(state.onboardingStep < total-1){ state.onboardingStep += 1; render(); }
+  else { state.onboardingOpen = false; render(); }
+}
+function closeOnboarding(){ state.onboardingOpen = false; render(); }
+function renderOnboarding(){
+  const steps = ONBOARDING_CONTENT[state.user.role] || [];
+  if(steps.length===0){ state.onboardingOpen=false; return ''; }
+  const i = Math.min(state.onboardingStep, steps.length-1);
+  const step = steps[i];
+  const isLast = i===steps.length-1;
+  return `
+    <div class="backdrop show" style="z-index:160;"></div>
+    <div class="onboarding-card">
+      <div class="onboarding-dots">${steps.map((_,idx)=>`<span class="onboarding-dot ${idx===i?'active':''}"></span>`).join('')}</div>
+      <span class="badge badge-outline" style="margin-bottom:10px;">${ROLE_LABELS[state.user.role]} · ${i+1}/${steps.length}</span>
+      <h3 style="font-size:17px;margin-bottom:8px;">${step.title}</h3>
+      <p class="dim" style="font-size:13.5px;line-height:1.55;margin:0 0 20px;">${step.text}</p>
+      <div class="form-actions">
+        <button class="btn" onclick="closeOnboarding()">Pular</button>
+        <button class="btn btn-maroon" onclick="onboardingNext()">${isLast ? 'Entendi' : 'Próximo'}</button>
+      </div>
+    </div>`;
+}
+
+const ROLE_NAV = {
+  lideranca:['dashboard','registrar','ocorrencias','alertas','monitoramento','procedimentos'],
+  brigadista:['dashboard','alertas','procedimentos'],
+  seguranca:['dashboard','registrar','gestao','alertas','monitoramento','procedimentos'],
+  setor:['dashboard','ocorrencias','alertas','monitoramento','procedimentos'],
+  admin:['dashboard','gestao','monitoramento','procedimentos','alertas','usuarios']
+};
+
+const NAV_META = {
+  dashboard:{label:'Painel', icon:ICONS.home},
+  registrar:{label:'Registrar Ocorrência', icon:ICONS.warn},
+  ocorrencias:{label:'Ocorrências', icon:ICONS.doc},
+  gestao:{label:'Gestão de Ocorrências', icon:ICONS.list},
+  alertas:{label:'Central de Alertas', icon:ICONS.bell},
+  procedimentos:{label:'Biblioteca de Segurança', icon:ICONS.book},
+  monitoramento:{label:'Monitoramento Preventivo', icon:ICONS.pulse},
+  usuarios:{label:'Administração', icon:ICONS.gearNav},
+  emergencia:{label:'Emergência', icon:ICONS.bolt},
+};
+
+const EMERGENCY_TYPES = [
+  {type:'Incêndio', icon:ICONS.flame},
+  {type:'Vazamento', icon:ICONS.drop},
+  {type:'Evacuação', icon:ICONS.run},
+  {type:'Falha de equipamento', icon:ICONS.gear},
+  {type:'Derramamento', icon:ICONS.drop},
+  {type:'Outra emergência', icon:ICONS.dots},
+];
+
+const DEMO_USERS = [
+  {id:'u1', name:'Marcos Andrade', email:'marcos.andrade@universalchemical.com', role:'lideranca', area:'Produção — Reatores', initials:'MA'},
+  {id:'u2', name:'Fernanda Diniz', email:'fernanda.diniz@universalchemical.com', role:'brigadista', area:'Brigada de Emergência', initials:'FD'},
+  {id:'u3', name:'Carlos Bittencourt', email:'carlos.bittencourt@universalchemical.com', role:'seguranca', area:'Segurança do Trabalho', initials:'CB'},
+  {id:'u4', name:'Renata Souza', email:'renata.souza@universalchemical.com', role:'setor', area:'Manutenção Elétrica', initials:'RS'},
+  {id:'u5', name:'Igor Prado', email:'igor.prado@universalchemical.com', role:'admin', area:'TI Industrial', initials:'IP'},
+];
+
+const TIMELINE_STEPS = ['Registrada','Encaminhada','Em atendimento','Resolvida','Encerrada'];
+const STATUS_CLASS = {'Registrada':'registrada','Encaminhada':'encaminhada','Em atendimento':'ematendimento','Resolvida':'resolvida','Encerrada':'encerrada'};
+const CRIT_LABEL = {baixo:'Baixo', medio:'Médio', alto:'Alto', critico:'Crítico'};
+
+/* ---------- Seed: Ocorrências ---------- */
+let occurrenceSeq = 1047;
+const seedOccurrences = [
+  {id:'OC-2026-1041', type:'Falha de equipamento', description:'Reator R-02 apresentou pequena oscilação de temperatura acima do padrão durante a batelada da manhã.',
+    location:'Produção — Reatores — Reator R-02', area:'Produção — Reatores', criticality:'medio',
+    datetime:'2026-09-07T15:00', responsible:'Segurança do Trabalho', status:'Resolvida',
+    observations:'Oscilação acompanhada pelo sensor de temperatura do reator (Monitoramento Preventivo).',
+    history:[
+      {step:'Registrada', by:'Marcos Andrade', at:'07/09 15:00', note:'Oscilação percebida durante acompanhamento de rotina da área.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:'07/09 15:01', note:'Encaminhada para Segurança do Trabalho para avaliação.'},
+      {step:'Em atendimento', by:'Carlos Bittencourt', at:'07/09 15:20', note:'Verificação junto à equipe de processo.'},
+      {step:'Resolvida', by:'Carlos Bittencourt', at:'07/09 16:10', note:'Parâmetros normalizados após ajuste operacional.'},
+    ], alertsSent:['AL-3299']},
+  {id:'OC-2026-1042', type:'Vazamento', description:'Pequeno gotejamento identificado na flange da linha de transferência do Tanque T-12, sem odor forte perceptível.',
+    location:'Tancagem — próximo ao Tanque T-12', area:'Tancagem', criticality:'baixo',
+    datetime:'2026-09-08T07:42', responsible:'Manutenção Elétrica', status:'Em atendimento',
+    observations:'Área sinalizada com cones enquanto aguarda equipe de manutenção mecânica.',
+    history:[
+      {step:'Registrada', by:'Marcos Andrade', at:'08/09 07:42', note:'Ocorrência registrada durante ronda de início de turno.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:'08/09 07:43', note:'Encaminhada automaticamente para Manutenção Elétrica conforme área.'},
+      {step:'Em atendimento', by:'Renata Souza', at:'08/09 08:15', note:'Equipe a caminho para avaliar a flange.'},
+    ], alertsSent:['AL-3301']},
+  {id:'OC-2026-1044', type:'Falha de equipamento', description:'Bomba centrífuga B-07 apresentando vibração acima do normal e ruído incomum durante operação contínua.',
+    location:'Área de Utilidades — Casa de Bombas 2', area:'Utilidades', criticality:'medio',
+    datetime:'2026-09-08T09:10', responsible:'Segurança do Trabalho', status:'Encaminhada',
+    observations:'Operador reduziu a rotação como medida preventiva.',
+    history:[
+      {step:'Registrada', by:'Marcos Andrade', at:'08/09 09:10', note:'Identificado durante checklist de operação.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:'08/09 09:11', note:'Encaminhada para Segurança do Trabalho para avaliação de risco.'},
+    ], alertsSent:['AL-3302']},
+  {id:'OC-2026-1046', type:'Vazamento', description:'Vazamento de produto químico identificado na área de carregamento de caminhões-tanque, com formação de poça visível no piso.',
+    location:'Pátio de Expedição — Baia 3', area:'Expedição', criticality:'critico',
+    datetime:'2026-09-08T10:05', responsible:'Brigada de Emergência', status:'Em atendimento',
+    observations:'Acionamento imediato da brigada e isolamento da baia. Operação de carregamento suspensa.',
+    history:[
+      {step:'Registrada', by:'Marcos Andrade', at:'08/09 10:05', note:'Vazamento identificado por operador durante carregamento.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:'08/09 10:05', note:'Encaminhamento automático crítico para Brigada e Segurança do Trabalho.'},
+      {step:'Em atendimento', by:'Fernanda Diniz', at:'08/09 10:09', note:'Brigada isolou a área e iniciou contenção conforme procedimento de vazamento.'},
+    ], alertsSent:['AL-3303']},
+  {id:'OC-2026-1039', type:'Evacuação', description:'Simulado de evacuação parcial do bloco administrativo por falha momentânea no sistema de exaustão.',
+    location:'Bloco Administrativo — 2º andar', area:'Administrativo', criticality:'alto',
+    datetime:'2026-09-05T14:20', responsible:'Segurança do Trabalho', status:'Encerrada',
+    observations:'Situação controlada em 12 minutos. Sistema de exaustão restabelecido pela manutenção.',
+    history:[
+      {step:'Registrada', by:'Carlos Bittencourt', at:'05/09 14:20', note:'Falha detectada por sensor de qualidade do ar.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:'05/09 14:20', note:'Encaminhada para Segurança do Trabalho e Brigada.'},
+      {step:'Em atendimento', by:'Fernanda Diniz', at:'05/09 14:23', note:'Evacuação parcial conduzida conforme procedimento.'},
+      {step:'Resolvida', by:'Renata Souza', at:'05/09 14:32', note:'Exaustão restabelecida, ar verificado dentro do padrão.'},
+      {step:'Encerrada', by:'Carlos Bittencourt', at:'05/09 15:00', note:'Ocorrência encerrada após verificação final e relatório.'},
+    ], alertsSent:['AL-3298']},
+];
+
+/* ---------- Seed: Alertas ---------- */
+const seedAlerts = [
+  {id:'AL-3303', occurrenceId:'OC-2026-1046', level:'critico', category:'Emergência', title:'Vazamento crítico — Pátio de Expedição', message:'Vazamento de produto químico na Baia 3. Isolamento imediato da área e acionamento da brigada.', area:'Expedição', targetRoles:['brigadista','seguranca','admin'], timestamp:'08/09 10:05', confirmations:['Fernanda Diniz','Carlos Bittencourt'], read:false},
+  {id:'AL-3302', occurrenceId:'OC-2026-1044', level:'medio', category:'Ocorrência', title:'Vibração anormal — Bomba B-07', message:'Equipamento com vibração e ruído fora do padrão. Avaliação da Segurança do Trabalho solicitada.', area:'Utilidades', targetRoles:['seguranca','setor'], timestamp:'08/09 09:11', confirmations:['Carlos Bittencourt'], read:true},
+  {id:'AL-3301', occurrenceId:'OC-2026-1042', level:'baixo', category:'Ocorrência', title:'Gotejamento identificado — Tanque T-12', message:'Pequeno vazamento em flange. Manutenção Elétrica acionada para reparo.', area:'Tancagem', targetRoles:['setor'], timestamp:'08/09 07:43', confirmations:['Renata Souza'], read:true},
+  {id:'AL-3299', occurrenceId:'OC-2026-1041', level:'medio', category:'Ocorrência', title:'Oscilação de temperatura — Reator R-02', message:'Temperatura acima do padrão durante batelada da manhã. Avaliação da Segurança do Trabalho solicitada.', area:'Produção — Reatores', targetRoles:['seguranca','lideranca'], timestamp:'07/09 15:01', confirmations:['Carlos Bittencourt'], read:true},
+  {id:'AL-3298', occurrenceId:'OC-2026-1039', level:'alto', category:'Emergência', title:'Evacuação parcial — Bloco Administrativo', message:'Falha no sistema de exaustão motivou evacuação parcial preventiva do 2º andar.', area:'Administrativo', targetRoles:['brigadista','seguranca'], timestamp:'05/09 14:20', confirmations:['Fernanda Diniz','Carlos Bittencourt'], read:true},
+];
+
+/* ---------- Seed: Procedimentos ---------- */
+const seedProcedures = [
+  {id:'P01', category:'Incêndio', title:'Resposta a princípio de incêndio em área de processo', description:'Procedimento para contenção inicial e comunicação em caso de princípio de incêndio próximo a equipamentos de processo.',
+    steps:['Acionar o alarme mais próximo e comunicar a Brigada de Emergência.','Isolar a fonte de energia/alimentação do equipamento, se seguro fazê-lo.','Utilizar extintor adequado à classe de fogo apenas se treinado e a situação for controlável.','Evacuar a área caso o fogo não seja contido em 1 minuto.','Aguardar a brigada em ponto de encontro seguro e informar detalhes da ocorrência.'],
+    responsible:'Brigada de Emergência / Segurança do Trabalho', lastUpdated:'22/07/2026'},
+  {id:'P02', category:'Vazamento', title:'Contenção de vazamento de produto químico líquido', description:'Passos para isolamento e contenção segura de vazamentos em tanques, tubulações ou pontos de carregamento.',
+    steps:['Isolar a área e impedir a circulação de pessoas não envolvidas.','Identificar o produto envolvido consultando a FISPQ correspondente.','Interromper a fonte do vazamento (válvula, bombeamento) se for seguro.','Conter o produto com barreiras/absorventes apropriados, evitando drenos.','Acionar Segurança do Trabalho e registrar a ocorrência no PRECOR com localização exata.'],
+    responsible:'Segurança do Trabalho', lastUpdated:'14/08/2026'},
+  {id:'P03', category:'Derramamento', title:'Atendimento a derramamento de pequeno volume', description:'Orientações para derramamentos controláveis que não envolvem risco imediato de incêndio ou exposição grave.',
+    steps:['Sinalizar a área com cones ou fita de isolamento.','Utilizar EPI adequado antes de qualquer contato com o produto.','Aplicar material absorvente compatível com o produto derramado.','Descartar o material contaminado conforme procedimento de resíduos.','Registrar a ocorrência informando volume estimado e produto envolvido.'],
+    responsible:'Setor responsável pela área', lastUpdated:'02/06/2026'},
+  {id:'P04', category:'Falha de equipamento', title:'Parada segura de equipamento com anomalia operacional', description:'Critérios para parada preventiva de equipamentos que apresentem vibração, temperatura ou ruído fora do padrão.',
+    steps:['Reduzir a operação do equipamento a um regime seguro, se possível.','Comunicar imediatamente o setor de manutenção responsável.','Registrar os parâmetros observados (temperatura, vibração, ruído).','Isolar o equipamento caso o risco de falha estrutural seja identificado.','Aguardar liberação da manutenção antes de retomar operação normal.'],
+    responsible:'Manutenção / Segurança do Trabalho', lastUpdated:'30/08/2026'},
+  {id:'P05', category:'Evacuação', title:'Evacuação parcial ou total de área industrial', description:'Fluxo de evacuação em caso de risco iminente identificado em qualquer área da unidade.',
+    steps:['Acionar o alarme geral ou setorial conforme abrangência do risco.','Seguir as rotas de fuga sinalizadas até o ponto de encontro designado.','Não utilizar elevadores durante a evacuação.','Realizar contagem de pessoas no ponto de encontro por líder de área.','Aguardar liberação formal da Segurança do Trabalho para retorno.'],
+    responsible:'Segurança do Trabalho / Brigada de Emergência', lastUpdated:'10/07/2026'},
+  {id:'P06', category:'Outras situações de emergência', title:'Comunicação de condição anormal identificada por monitoramento', description:'Passos ao receber um alerta preventivo gerado a partir de dados de sensores fora da faixa normal.',
+    steps:['Verificar no PRECOR o sensor e a área que originou o alerta.','Confirmar recebimento do alerta na Central de Alertas.','Realizar inspeção visual da área/equipamento indicado, se seguro.','Registrar ocorrência formal caso a condição anormal seja confirmada.','Informar o setor responsável para acompanhamento até normalização.'],
+    responsible:'Segurança do Trabalho', lastUpdated:'01/09/2026'},
+];
+
+/* ---------- Seed: Sensores ---------- */
+const seedSensors = [
+  {id:'S01', name:'Reator R-02 — Temperatura', area:'Produção — Reatores', responsible:'Segurança do Trabalho', unit:'°C', direction:'alta', value:78, base:78, jitter:1.2, limits:{atencao:85, anormal:95, critico:105}},
+  {id:'S02', name:'Linha de Transferência — Pressão', area:'Tancagem', responsible:'Segurança do Trabalho', unit:'bar', direction:'alta', value:4.1, base:4.1, jitter:0.15, limits:{atencao:5.5, anormal:6.5, critico:7.5}},
+  {id:'S03', name:'Tanque T-12 — Nível', area:'Tancagem', responsible:'Segurança do Trabalho', unit:'%', direction:'baixa', value:62, base:62, jitter:1.5, limits:{atencao:30, anormal:18, critico:10}},
+  {id:'S04', name:'Bomba B-07 — Vibração', area:'Utilidades', responsible:'Manutenção Elétrica', unit:'mm/s', direction:'alta', value:2.3, base:2.3, jitter:0.2, limits:{atencao:4.5, anormal:6.0, critico:8.0}},
+  {id:'S05', name:'Casa de Bombas — Temperatura Ambiente', area:'Utilidades', responsible:'Segurança do Trabalho', unit:'°C', direction:'alta', value:31, base:31, jitter:0.8, limits:{atencao:38, anormal:44, critico:50}},
+  {id:'S06', name:'Baia 3 — Sensor de Gases (Expedição)', area:'Expedição', responsible:'Segurança do Trabalho', unit:'ppm', direction:'alta', value:6, base:6, jitter:0.5, limits:{atencao:20, anormal:35, critico:50}},
+];
+
+/* ---------- Seed: Registro manual de leituras (modelo de acompanhamento) ---------- */
+const seedReadings = [
+  {id:'LT-001', sensorId:'S01', datetime:'2026-09-08T07:30', value:79.5, responsible:'Marcos Andrade', observations:'Leitura de rotina do início de turno.'},
+  {id:'LT-002', sensorId:'S04', datetime:'2026-09-08T09:10', value:4.8, responsible:'Renata Souza', observations:'Leve aumento observado; equipamento sob acompanhamento.'},
+  {id:'LT-003', sensorId:'S06', datetime:'2026-09-08T10:05', value:42, responsible:'Fernanda Diniz', observations:'Leitura durante atendimento à ocorrência OC-2026-1046.'},
+];
+
+/* ---------- Estado global ---------- */
+const state = {
+  user:null, screen:'login', selectedLoginUser:null, loginError:'', showDemoUsers:false, showPassword:false,
+  sidebarOpen:false, sidebarCollapsed:false,
+  occurrences: JSON.parse(JSON.stringify(seedOccurrences)),
+  alerts: JSON.parse(JSON.stringify(seedAlerts)),
+  procedures: JSON.parse(JSON.stringify(seedProcedures)),
+  sensors: JSON.parse(JSON.stringify(seedSensors)),
+  readings: JSON.parse(JSON.stringify(seedReadings)),
+  selectedOccurrenceId:null, selectedProcedureId:null,
+  alertTab:'todos', procCategory:'Todos', procSearch:'',
+  occStatusTab:'Todas', occCritTab:'Todos', occSearch:'',
+  gestaoFilters:{data:'', area:'Todas', criticidade:'Todas', status:'Todas', tipo:'Todas'},
+  formDraft:null, lastConfirmedProtocol:null, registrarError:'',
+  monitorAnomalyActive:false, monitorSimTimer:null,
+  monitorTab:'tempo-real', readingFormOpen:false, readingDraft:null, readingError:'',
+  emergencyStep:1, emergencyDraft:{type:'', location:'', detail:''}, lastEmergencyProtocol:null, emergencyError:'',
+  resolveNoteOpen:false, resolveNoteOccId:null, resolveNoteImage:null, resolveNoteImageName:'', resolveError:'',
+  advanceFormOpen:false, advanceFormOccId:null, advanceFormImage:null, advanceFormImageName:'',
+  userFormOpen:false, userFormMode:'new', userFormId:null, userFormDraft:null, userFormError:'',
+  auditLog:[], loginLog:[], adminTab:'usuarios', gestaoTab:'ocorrencias',
+  profileSwitcherOpen:false, globalSearchOpen:false, globalSearchQuery:'',
+  onboardingOpen:false, onboardingStep:0, onboardingSeenRoles:[], soundEnabled:true,
+};
+
+/* ---------- Log de auditoria e de logins (perfil Administrador) ---------- */
+let auditSeq = 0;
+function logAudit(action, details){
+  auditSeq += 1;
+  state.auditLog.unshift({
+    id:'LOG-'+String(auditSeq).padStart(4,'0'),
+    timestamp: formatDatetime(new Date().toISOString()),
+    user: state.user ? state.user.name : 'Sistema',
+    role: state.user ? ROLE_LABELS[state.user.role] : '—',
+    action, details
+  });
+}
+
+/* ---------- Notificações ativas (toast) ---------- */
+/* Independentes do ciclo de render() — anexadas direto ao <body> para
+   sobreviverem a re-renderizações e simular um alerta "empurrado" ao
+   usuário no instante em que a condição crítica é criada, não só quando
+   ele abre a Central de Alertas manualmente. */
+/* ---------- Alerta sonoro (Web Audio, sem arquivo externo) ----------
+   Chão de fábrica é barulhento e nem sempre alguém está olhando a tela — um bipe curto
+   junto do toast crítico cobre esse ponto cego. O AudioContext só é criado a partir de um
+   gesto do usuário (ex.: o clique em "Entrar"), respeitando a política de autoplay dos
+   navegadores; se não houver contexto disponível, o alerta visual continua funcionando normalmente. */
+let audioCtx = null;
+function ensureAudioCtx(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ audioCtx = null; }
+  }
+  return audioCtx;
+}
+function playCriticalBeep(){
+  if(!state.soundEnabled) return;
+  const ctx = ensureAudioCtx();
+  if(!ctx) return;
+  if(ctx.state==='suspended'){ ctx.resume().catch(()=>{}); }
+  try{
+    const now = ctx.currentTime;
+    for(let i=0;i<2;i++){
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = 880;
+      const t0 = now + i*0.28;
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.linearRampToValueAtTime(0.16, t0+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0+0.22);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t0);
+      osc.stop(t0+0.25);
+    }
+  }catch(e){}
+}
+function toggleSound(){ state.soundEnabled = !state.soundEnabled; render(); }
+
+function showToast(message, level){
+  if(level==='critico') playCriticalBeep();
+  let root = document.getElementById('toast-root');
+  if(!root){
+    root = document.createElement('div');
+    root.id = 'toast-root';
+    root.setAttribute('aria-live','assertive');
+    root.setAttribute('aria-atomic','true');
+    document.body.appendChild(root);
+  }
+  const el = document.createElement('div');
+  el.className = 'toast toast-'+level;
+  const icon = level==='critico' ? ICONS.bellLg : (level==='sucesso' ? ICONS.check : ICONS.info);
+  el.innerHTML = icon+'<div class="toast-text"></div>';
+  el.querySelector('.toast-text').textContent = message;
+  root.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{
+    el.classList.remove('show');
+    setTimeout(()=>el.remove(), 250);
+  }, 6000);
+}
+
+function fmtCrit(c){ return CRIT_LABEL[c] || c; }
+function critBadge(c){ return '<span class="badge badge-'+c+'">'+fmtCrit(c)+'</span>'; }
+function statusBadge(s){ return '<span class="badge badge-'+STATUS_CLASS[s]+'">'+s+'</span>'; }
+
+function sensorStatus(sensor){
+  const v = sensor.value, L = sensor.limits;
+  if(sensor.direction==='alta'){
+    if(v>=L.critico) return 'CRÍTICO';
+    if(v>=L.anormal) return 'ANORMAL';
+    if(v>=L.atencao) return 'ATENÇÃO';
+    return 'NORMAL';
+  } else {
+    if(v<=L.critico) return 'CRÍTICO';
+    if(v<=L.anormal) return 'ANORMAL';
+    if(v<=L.atencao) return 'ATENÇÃO';
+    return 'NORMAL';
+  }
+}
+function sensorStatusClass(s){ return {NORMAL:'normal', 'ATENÇÃO':'atencao', ANORMAL:'anormal', 'CRÍTICO':'critico'}[s]; }
+function findSensorById(id){ return state.sensors.find(s=>s.id===id); }
+function statusForValue(sensor, value){
+  const L = sensor.limits;
+  if(sensor.direction==='alta'){
+    if(value>=L.critico) return 'CRÍTICO';
+    if(value>=L.anormal) return 'ANORMAL';
+    if(value>=L.atencao) return 'ATENÇÃO';
+    return 'NORMAL';
+  } else {
+    if(value<=L.critico) return 'CRÍTICO';
+    if(value<=L.anormal) return 'ANORMAL';
+    if(value<=L.atencao) return 'ATENÇÃO';
+    return 'NORMAL';
+  }
+}
+function findOccurrence(id){ return state.occurrences.find(o=>o.id===id); }
+
+/* Escopo de visualização por perfil: Liderança vê a própria área; Setor Responsável vê o
+   que foi direcionado à sua função; Segurança do Trabalho e Administrador têm visão geral
+   da unidade (função de supervisão plantwide). */
+function occurrencesForUser(user){
+  if(user.role==='lideranca') return state.occurrences.filter(o=>o.area===user.area);
+  if(user.role==='setor') return state.occurrences.filter(o=>o.responsible===user.area);
+  return state.occurrences;
+}
+function sensorsForUser(user){
+  if(user.role==='setor') return state.sensors.filter(s=>s.responsible===user.area);
+  if(user.role==='lideranca') return state.sensors.filter(s=>s.area===user.area);
+  return state.sensors;
+}
+function isRelevantToBrigadista(o){
+  return state.alerts.some(a=>o.alertsSent.includes(a.id) && a.targetRoles.includes('brigadista'));
+}
+/* Se a ocorrência está dentro da área/escopo de atuação do usuário — usado pra decidir se
+   o alerta oferece "Confirmar e atender" (ação real) ou só "Confirmar recebimento" (ciência). */
+function occurrenceInScope(o, user){
+  if(user.role==='seguranca' || user.role==='admin') return true;
+  if(user.role==='lideranca') return o.area===user.area;
+  if(user.role==='setor') return o.responsible===user.area;
+  if(user.role==='brigadista') return isRelevantToBrigadista(o);
+  return false;
+}
+/* Regra de fechamento: qualquer perfil pode avançar até "Resolvida" dentro do seu escopo
+   (Brigadista inclusive, para ocorrências em que foi acionado). A transição final para
+   "Encerrada" é um duplo-check exclusivo da Segurança do Trabalho / Administrador — ver
+   confirmarEncerramento() e reabrirOcorrencia(). */
+function canAdvanceOccurrence(o, user){
+  if(o.status==='Encerrada') return false;
+  const idx = TIMELINE_STEPS.indexOf(o.status);
+  const nextStep = TIMELINE_STEPS[idx+1];
+  if(nextStep==='Encerrada') return false; // tratado pelo duplo-check dedicado
+  if(user.role==='seguranca' || user.role==='admin') return true;
+  if(user.role==='lideranca') return o.area===user.area;
+  if(user.role==='setor') return o.responsible===user.area;
+  if(user.role==='brigadista') return (o.status==='Encaminhada' || o.status==='Em atendimento') && isRelevantToBrigadista(o);
+  return false;
+}
+function canCloseOccurrence(o, user){
+  return o.status==='Resolvida' && (user.role==='seguranca' || user.role==='admin');
+}
+function scopeDescription(user){
+  if(user.role==='lideranca') return 'Sua área: '+user.area+' — ocorrências e sensores';
+  if(user.role==='setor') return 'Ocorrências e sensores direcionados a: '+user.area;
+  return 'Visão geral da unidade — Sarapuí';
+}
+function findProcedure(id){ return state.procedures.find(p=>p.id===id); }
+
+/* Mapeia o tipo de risco da ocorrência para a categoria correspondente na Biblioteca de
+   Segurança, para sugerir automaticamente o procedimento de resolução ao Brigadista. */
+const TYPE_TO_CATEGORY = {
+  'Vazamento':'Vazamento',
+  'Derramamento':'Derramamento',
+  'Falha de equipamento':'Falha de equipamento',
+  'Incêndio':'Incêndio',
+  'Evacuação':'Evacuação',
+  'Outra situação de emergência':'Outras situações de emergência',
+  'Outra emergência':'Outras situações de emergência',
+};
+function proceduresForOccurrence(o){
+  const cat = TYPE_TO_CATEGORY[o.type] || o.type;
+  let matches = state.procedures.filter(p=>p.category===cat);
+  if(matches.length===0) matches = state.procedures.filter(p=>p.category==='Outras situações de emergência');
+  return matches;
+}
+function renderSuggestedProcedures(o){
+  const procs = proceduresForOccurrence(o);
+  if(procs.length===0) return '';
+  return `
+    <div class="card panel-pad suggestion-box" style="margin-bottom:16px;">
+      <span class="exp-tag suggestion-tag">${ICONS.book} Sugestão da Biblioteca de Segurança</span>
+      <h3 style="font-size:15.5px;margin:8px 0 4px;">Como resolver — ${o.type}</h3>
+      <p class="dim" style="font-size:12.5px;margin:0 0 14px;">Procedimento recomendado com base no tipo desta ocorrência.</p>
+      ${procs.map((p,i)=>`
+        ${i>0 ? '<hr style="border:none;border-top:1px solid var(--border);margin:18px 0;">' : ''}
+        <span class="proc-cat-tag">${p.category}</span>
+        <h4 style="font-size:14.5px;margin:8px 0 10px;">${p.title}</h4>
+        <ul class="step-list">${p.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+        <button class="btn btn-sm" style="margin-top:12px;" onclick="abrirProcedimento('${p.id}')">Ver procedimento completo</button>
+      `).join('')}
+    </div>`;
+}
+
+function formatDatetime(dt){
+  const d = new Date(dt);
+  if(isNaN(d)) return dt;
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mi = String(d.getMinutes()).padStart(2,'0');
+  return dd+'/'+mm+' '+hh+':'+mi;
+}
+
+/* ============================= ROTEAMENTO / RENDER ============================= */
+
+function navigate(screen, extra){
+  state.screen = screen;
+  state.sidebarOpen = false;
+  state.registrarError = '';
+  state.emergencyError = '';
+  state.resolveNoteOpen = false;
+  state.resolveNoteOccId = null;
+  state.resolveNoteImage = null;
+  state.resolveNoteImageName = '';
+  state.advanceFormOpen = false;
+  state.advanceFormOccId = null;
+  state.advanceFormImage = null;
+  state.advanceFormImageName = '';
+  state.userFormOpen = false;
+  state.userFormId = null;
+  state.userFormError = '';
+  if(extra) Object.assign(state, extra);
+  render();
+  window.scrollTo(0,0);
+}
+function toggleSidebar(v){ state.sidebarOpen = v; render(); }
+function toggleSidebarCollapse(){
+  state.sidebarCollapsed = !state.sidebarCollapsed;
+  document.documentElement.style.setProperty('--sidebar-w', state.sidebarCollapsed ? '76px' : '272px');
+  render();
+}
+
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML = state.screen==='login' ? renderLogin() : renderShell();
+}
+
+/* ============================= LOGIN ============================= */
+
+function renderLogin(){
+  const sel = state.selectedLoginUser;
+  return `
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo-row">
+        <div class="brand-mark">${ICONS.shield}</div>
+        <div class="brand-name">PRECOR</div>
+      </div>
+
+      <div class="login-notice">${ICONS.info}<div><b>Ferramenta complementar de segurança.</b> Não substitui alarmes, procedimentos ou sistemas de segurança industrial já implantados na unidade — é uma segunda camada de comunicação.</div></div>
+
+      <h1>Acesso ao sistema</h1>
+      <span class="muted">Informe suas credenciais para entrar</span>
+
+      <div class="field">
+        <label>Usuário</label>
+        <div class="input-icon">${ICONS.user}<input type="text" readonly value="${sel ? sel.email : ''}" placeholder="nome.sobrenome"></div>
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <div class="input-icon">${ICONS.lock}<input type="${state.showPassword?'text':'password'}" readonly value="${sel ? 'precor2026' : ''}" placeholder="••••••••">
+          <button class="eye-toggle" aria-label="Mostrar ou ocultar senha" onclick="state.showPassword=!state.showPassword; render();">${state.showPassword ? ICONS.eyeOff : ICONS.eye}</button>
+        </div>
+      </div>
+      <div class="login-error">${state.loginError}</div>
+      <button class="btn btn-primary btn-block btn-lg" onclick="doLogin()">Entrar →</button>
+
+      <button class="login-help-link" onclick="state.showDemoUsers=!state.showDemoUsers; render();">${ICONS.help} Ver usuários de demonstração</button>
+
+      ${state.showDemoUsers ? `
+        <div class="demo-panel">
+          <div class="demo-list">
+            ${DEMO_USERS.map(u=>`
+              <button class="demo-card ${sel && sel.id===u.id ? 'active':''}" onclick="selectLoginUser('${u.id}')" type="button">
+                <div class="demo-avatar">${u.initials}</div>
+                <div><b>${u.name}</b><span>${ROLE_LABELS[u.role]}</span></div>
+              </button>
+            `).join('')}
+          </div>
+        </div>` : ''}
+
+      <div class="login-disclaimer">Protótipo acadêmico — os dados desta sessão não são salvos e serão perdidos ao atualizar a página.</div>
+    </div>
+  </div>`;
+}
+
+function selectLoginUser(id){ state.selectedLoginUser = DEMO_USERS.find(u=>u.id===id); state.loginError=''; render(); }
+
+function doLogin(){
+  ensureAudioCtx();
+  if(!state.selectedLoginUser){
+    state.loginError = 'Selecione um usuário de demonstração para continuar.';
+    state.showDemoUsers = true;
+    render();
+    return;
+  }
+  state.user = state.selectedLoginUser;
+  state.loginError='';
+  state.loginLog.unshift({
+    id:'LGN-'+String(state.loginLog.length+1).padStart(4,'0'),
+    timestamp: formatDatetime(new Date().toISOString()),
+    user: state.user.name, role: ROLE_LABELS[state.user.role], email: state.user.email
+  });
+  maybeShowOnboarding(state.user.role);
+  navigate('dashboard');
+  startMonitorJitter();
+}
+function doLogout(){
+  stopMonitorJitter();
+  state.user=null; state.selectedLoginUser=null; state.screen='login'; state.showDemoUsers=false;
+  render();
+}
+
+/* Troca de perfil sem logout — recurso de demonstração/apresentação: permite alternar
+   entre os 5 perfis mantendo os dados já criados na sessão (ocorrências, alertas, leituras),
+   para mostrar a continuidade do fluxo entre papéis sem precisar sair e entrar de novo. */
+function toggleProfileSwitcher(v){ state.profileSwitcherOpen = v; render(); }
+function switchProfile(userId){
+  const target = DEMO_USERS.find(u=>u.id===userId);
+  if(!target) return;
+  const previous = state.user.name;
+  state.user = target;
+  state.profileSwitcherOpen = false;
+  state.sidebarOpen = false;
+  logAudit('Perfil alternado (demonstração)', previous+' → '+target.name+' ('+ROLE_LABELS[target.role]+')');
+  showToast('Agora você está vendo o PRECOR como '+target.name+' ('+ROLE_LABELS[target.role]+').', 'info');
+  maybeShowOnboarding(target.role);
+  navigate('dashboard');
+}
+function renderProfileSwitcher(){
+  return `
+    <div class="backdrop show" onclick="toggleProfileSwitcher(false)" style="z-index:150;"></div>
+    <div class="profile-switcher">
+      <div class="profile-switcher-head">
+        <div><b>Trocar perfil</b><span class="dim" style="font-size:11.5px;display:block;margin-top:2px;">Recurso de demonstração — os dados da sessão são mantidos.</span></div>
+        <button class="sidebar-close" style="color:var(--text-dim);" onclick="toggleProfileSwitcher(false)" aria-label="Fechar">${ICONS.close}</button>
+      </div>
+      <div class="demo-list" style="padding:14px 18px 18px;">
+        ${DEMO_USERS.map(u=>`
+          <button class="demo-card ${state.user.id===u.id?'active':''}" onclick="switchProfile('${u.id}')" type="button">
+            <div class="demo-avatar">${u.initials}</div>
+            <div><b>${u.name}</b><span>${ROLE_LABELS[u.role]}</span></div>
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ---------- Busca global ---------- */
+function toggleGlobalSearch(v){
+  state.globalSearchOpen = v;
+  if(!v) state.globalSearchQuery = '';
+  render();
+  if(v) setTimeout(()=>{ const i=document.getElementById('global-search-input'); if(i) i.focus(); }, 30);
+}
+function globalSearchResults(){
+  const q = state.globalSearchQuery.trim().toLowerCase();
+  if(!q) return {occ:[], proc:[], alert:[]};
+  const occ = occurrencesForUser(state.user).filter(o=>(o.id+' '+o.type+' '+o.location+' '+o.area+' '+o.description).toLowerCase().includes(q)).slice(0,6);
+  const proc = state.procedures.filter(p=>(p.title+' '+p.description+' '+p.category).toLowerCase().includes(q)).slice(0,6);
+  const alert = state.alerts.filter(a=>a.targetRoles.includes(state.user.role) && (a.title+' '+a.message+' '+a.category).toLowerCase().includes(q)).slice(0,6);
+  return {occ, proc, alert};
+}
+function goToSearchResult(type, id){
+  toggleGlobalSearch(false);
+  if(type==='occ') abrirOcorrencia(id);
+  else if(type==='proc') abrirProcedimento(id);
+  else if(type==='alert') navigate('alertas');
+}
+function renderGlobalSearch(){
+  const r = globalSearchResults();
+  const hasQuery = state.globalSearchQuery.trim().length>0;
+  const totalResults = r.occ.length + r.proc.length + r.alert.length;
+  return `
+    <div class="backdrop show" onclick="toggleGlobalSearch(false)" style="z-index:150;"></div>
+    <div class="global-search-panel">
+      <div class="global-search-input-row">
+        ${ICONS.search}
+        <input id="global-search-input" type="text" placeholder="Buscar ocorrências, procedimentos, alertas..." value="${state.globalSearchQuery}" oninput="state.globalSearchQuery=this.value; render(); const i=document.getElementById('global-search-input'); if(i){ i.focus(); i.setSelectionRange(i.value.length,i.value.length); }">
+        <button class="sidebar-close" style="color:var(--text-dim);" onclick="toggleGlobalSearch(false)" aria-label="Fechar busca">${ICONS.close}</button>
+      </div>
+      <div class="global-search-results">
+        ${!hasQuery ? '<div class="dim" style="padding:20px;text-align:center;font-size:12.5px;">Digite para buscar em tudo que está no seu escopo.</div>' : ''}
+        ${hasQuery && totalResults===0 ? '<div class="dim" style="padding:20px;text-align:center;font-size:12.5px;">Nenhum resultado encontrado.</div>' : ''}
+        ${r.occ.length ? `<div class="search-group-label">Ocorrências</div>` + r.occ.map(o=>`
+          <button class="search-result-item" onclick="goToSearchResult('occ','${o.id}')">
+            ${ICONS.doc}<div><b>${o.type} — ${o.location}</b><span>${o.id} · ${o.area}</span></div>${critBadge(o.criticality)}
+          </button>`).join('') : ''}
+        ${r.proc.length ? `<div class="search-group-label">Procedimentos</div>` + r.proc.map(p=>`
+          <button class="search-result-item" onclick="goToSearchResult('proc','${p.id}')">
+            ${ICONS.book}<div><b>${p.title}</b><span>${p.category}</span></div>
+          </button>`).join('') : ''}
+        ${r.alert.length ? `<div class="search-group-label">Alertas</div>` + r.alert.map(a=>`
+          <button class="search-result-item" onclick="goToSearchResult('alert','${a.id}')">
+            ${ICONS.bell}<div><b>${a.title}</b><span>${a.area}</span></div>${critBadge(a.level)}
+          </button>`).join('') : ''}
+      </div>
+    </div>`;
+}
+
+/* ============================= SHELL ============================= */
+
+function renderShell(){
+  const u = state.user;
+  const navItems = ROLE_NAV[u.role];
+  const unreadAlerts = state.alerts.filter(a=>!a.read).length;
+  const openOcc = occurrencesForUser(u).filter(o=>o.status!=='Encerrada').length;
+
+  return `
+    <div class="backdrop ${state.sidebarOpen?'show':''}" onclick="toggleSidebar(false)"></div>
+    <aside class="sidebar ${state.sidebarOpen?'open':''} ${state.sidebarCollapsed?'collapsed':''}">
+      <div class="sidebar-head">
+        <div class="sidebar-brand-text">
+          <div class="brand-mark">${ICONS.shield}</div>
+          <div><b>PRECOR</b><span>Prevenção, comunicação e resposta a riscos industriais</span></div>
+        </div>
+        <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="${state.sidebarCollapsed?'Expandir menu':'Minimizar menu'}" aria-label="${state.sidebarCollapsed?'Expandir menu':'Minimizar menu'}">${ICONS.collapse}</button>
+        <button class="sidebar-close" onclick="toggleSidebar(false)" aria-label="Fechar menu">${ICONS.close}</button>
+      </div>
+      <div class="sidebar-section-label">${ROLE_LABELS[u.role]}</div>
+      <nav class="nav">
+        ${navItems.map(k=>`
+          <button class="nav-item ${state.screen===k?'active':''}" onclick="navigate('${k}')" title="${NAV_META[k].label}">
+            ${NAV_META[k].icon}<span class="nav-label">${NAV_META[k].label}</span>
+            ${k==='ocorrencias' && openOcc ? '<span class="nav-badge">'+openOcc+'</span>' : ''}
+            ${k==='alertas' && unreadAlerts ? '<span class="nav-badge">'+unreadAlerts+'</span>' : ''}
+          </button>`).join('')}
+      </nav>
+      <div class="sidebar-foot">
+        <div class="sf-avatar">${u.initials}</div>
+        <div class="sf-meta"><b>${u.name}</b><span>${u.area}</span></div>
+        <button class="sf-logout" onclick="toggleProfileSwitcher(true)" title="Trocar perfil (demonstração)" aria-label="Trocar perfil">${ICONS.swap}</button>
+        <button class="sf-logout" onclick="doLogout()" title="Sair" aria-label="Sair">${ICONS.logout}</button>
+      </div>
+    </aside>
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" aria-label="Abrir menu" onclick="toggleSidebar(true)">${ICONS.menu}</button>
+        <h2>${NAV_META[state.screen] ? NAV_META[state.screen].label : 'PRECOR'}</h2>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="toggleSound()" title="${state.soundEnabled?'Silenciar alertas sonoros':'Ativar alertas sonoros'}" aria-label="Alternar som de alertas">${state.soundEnabled ? ICONS.soundOn : ICONS.soundOff}</button>
+        <button class="icon-btn" onclick="toggleGlobalSearch(true)" title="Buscar em todo o PRECOR" aria-label="Busca global">${ICONS.search}</button>
+        <button class="icon-btn" onclick="navigate('alertas')" title="Alertas" aria-label="Ver alertas">
+          ${ICONS.bell}${unreadAlerts ? '<span class="count-pill">'+unreadAlerts+'</span>' : ''}
+        </button>
+      </div>
+    </div>
+
+    ${state.globalSearchOpen ? renderGlobalSearch() : ''}
+    ${state.profileSwitcherOpen ? renderProfileSwitcher() : ''}
+    ${state.onboardingOpen ? renderOnboarding() : ''}
+
+    <div class="shell"><main class="main">${renderScreen()}</main></div>
+    ${state.screen!=='emergencia' ? '<button class="fab-emergency" onclick="abrirEmergencia()">'+ICONS.bolt+'<span class="fab-label">Emergência</span></button>' : ''}`;
+}
+
+function renderScreen(){
+  switch(state.screen){
+    case 'dashboard': return renderDashboard();
+    case 'registrar': return renderRegistrar();
+    case 'emergencia': return renderEmergencia();
+    case 'ocorrencias': return renderOcorrencias();
+    case 'gestao': return renderGestao();
+    case 'detalhe': return renderDetalhe();
+    case 'alertas': return renderAlertas();
+    case 'procedimentos': return renderProcedimentos();
+    case 'procedimento-detalhe': return renderProcedimentoDetalhe();
+    case 'monitoramento': return renderMonitoramento();
+    case 'usuarios': return renderUsuarios();
+    default: return renderDashboard();
+  }
+}
+
+/* ============================= DASHBOARD ============================= */
+
+function renderDashboard(){
+  const u = state.user;
+  const hasOccView = ROLE_NAV[u.role].includes('ocorrencias') || ROLE_NAV[u.role].includes('gestao');
+  const myAlerts = state.alerts.filter(a=>a.targetRoles.includes(u.role));
+  const criticosAtivos = myAlerts.filter(a=>a.level==='critico');
+
+  if(!hasOccView){
+    // Painel focado em alertas/procedimentos (ex.: Brigadista — sem visão de ocorrências)
+    const pendentes = myAlerts.filter(a=>!a.confirmations.includes(u.name));
+    const recentesAlertas = [...myAlerts].sort((a,b)=> b.timestamp.localeCompare(a.timestamp)).slice(0,4);
+    return `
+      <div class="dim" style="font-size:12.5px;font-weight:600;margin:-8px 0 16px;">${scopeDescription(u)}</div>
+      ${criticosAtivos.length ? `
+        <div class="crit-banner">
+          <div class="cb-icon">${ICONS.bellLg}</div>
+          <div><b>${criticosAtivos.length} alerta(s) crítico(s) ativo(s)</b><span>${criticosAtivos[0].title}</span></div>
+          <div class="cb-time">${criticosAtivos[0].timestamp}</div>
+        </div>` : ''}
+      <div class="kpi-grid">
+        <div class="card kpi amber"><div class="l">Alertas ativos</div><div class="n">${myAlerts.length}</div><div class="s">para você</div></div>
+        <div class="card kpi red"><div class="l">Alertas críticos</div><div class="n">${criticosAtivos.length}</div><div class="s">requerem atenção</div></div>
+        <div class="card kpi blue"><div class="l">Pendentes de confirmação</div><div class="n">${pendentes.length}</div><div class="s">aguardando você</div></div>
+        <div class="card kpi teal"><div class="l">Procedimentos disponíveis</div><div class="n">${state.procedures.length}</div><div class="s">na biblioteca</div></div>
+      </div>
+      <div class="section-title"><h3>Alertas recentes</h3>
+        <button class="btn-link" onclick="navigate('alertas')">Ver todos</button>
+      </div>
+      ${recentesAlertas.length===0 ? '<div class="card empty-state">Nenhum alerta direcionado a você no momento.</div>' : recentesAlertas.map(a=>`
+        <div class="card alert-card ${a.level}" onclick="navigate('alertas')" style="cursor:pointer;">
+          <div class="alert-tags">${critBadge(a.level)}${!a.read ? '<span class="badge badge-novo">Novo</span>' : ''}</div>
+          <b class="a-title">${a.title}</b>
+          <div class="alert-meta-row"><span>${a.timestamp}</span><span>${a.area}</span></div>
+        </div>`).join('')}`;
+  }
+
+  const occ = occurrencesForUser(u);
+  const abertas = occ.filter(o=>o.status!=='Encerrada').length;
+  const criticas = occ.filter(o=>o.criticality==='critico' && o.status!=='Encerrada').length;
+  const alertasAtivos = myAlerts.length;
+  const aguardando = occ.filter(o=>o.status==='Registrada' || o.status==='Encaminhada').length;
+  const recentes = [...occ].sort((a,b)=> b.datetime.localeCompare(a.datetime)).slice(0,4);
+  const scopedSensors = sensorsForUser(u);
+  const normais = scopedSensors.filter(s=>sensorStatus(s)==='NORMAL').length;
+
+  return `
+    <div class="dim" style="font-size:12.5px;font-weight:600;margin:-8px 0 16px;">${scopeDescription(u)}</div>
+
+    ${criticosAtivos.length ? `
+      <div class="crit-banner">
+        <div class="cb-icon">${ICONS.bellLg}</div>
+        <div><b>${criticosAtivos.length} alerta(s) crítico(s) ativo(s)</b><span>${criticosAtivos[0].title}</span></div>
+        <div class="cb-time">${criticosAtivos[0].timestamp}</div>
+      </div>` : ''}
+
+    <div class="kpi-grid">
+      <div class="card kpi orange"><div class="l">Ocorrências abertas</div><div class="n">${abertas}</div><div class="s">em andamento</div></div>
+      <div class="card kpi red"><div class="l">Ocorrências críticas</div><div class="n">${criticas}</div><div class="s">requerem atenção</div></div>
+      <div class="card kpi amber"><div class="l">Alertas ativos</div><div class="n">${alertasAtivos}</div><div class="s">para você</div></div>
+      <div class="card kpi blue"><div class="l">Aguardando atendimento</div><div class="n">${aguardando}</div><div class="s">na fila</div></div>
+    </div>
+
+    <div class="section-title"><h3>Ocorrências recentes</h3>
+      <button class="btn-link" onclick="navigate('${u.role==='seguranca'||u.role==='admin' ? 'gestao':'ocorrencias'}')">Ver todas</button>
+    </div>
+    ${recentes.length===0 ? '<div class="card empty-state">Nenhuma ocorrência no seu escopo no momento.</div>' : recentes.map(o=>`
+      <div class="card occ-card" onclick="abrirOcorrencia('${o.id}')">
+        <div class="occ-top"><b>${o.type} — ${o.location}</b>${critBadge(o.criticality)}</div>
+        <div class="occ-tags">${statusBadge(o.status)}</div>
+        <div class="occ-meta">${o.id} · ${o.area} · ${formatDatetime(o.datetime)}</div>
+      </div>`).join('')}
+
+    <div class="section-title" style="margin-top:22px;"><h3>Condições monitoradas</h3>
+      ${ROLE_NAV[u.role].includes('monitoramento') ? '<button class="btn-link" onclick="navigate(\'monitoramento\')">Detalhes</button>' : ''}
+    </div>
+    <span class="exp-tag">Dados simulados · experimental</span>
+    <div class="sensor-grid">
+      ${sensorsForUser(u).slice(0,4).map(s=>{
+        const st = sensorStatus(s);
+        return `<div class="card sensor-card st-${sensorStatusClass(st)}">
+          <div class="sc-top"><div><div class="sc-name">${s.name}</div><div class="sc-area">${s.area}</div></div>${'<span class="badge badge-'+sensorStatusClass(st)+'">'+st+'</span>'}</div>
+          <div class="sc-val-row"><div class="sc-val">${s.value.toFixed(1)}<span class="dim" style="font-size:12px;"> ${s.unit}</span></div>${renderSparkline(s)}</div>
+          ${renderTrendLine(s)}
+        </div>`;
+      }).join('')}
+    </div>
+    ${sensorsForUser(u).length===0 ? '<div class="dim" style="font-size:12.5px;">Nenhum ponto de monitoramento associado ao seu setor.</div>' : ''}
+    <div class="dim" style="margin-top:12px;font-size:12px;">${normais} de ${scopedSensors.length} pontos dentro da faixa normal.</div>`;
+}
+
+/* ============================= REGISTRAR ============================= */
+
+const RISK_TYPES = ['Vazamento','Derramamento','Falha de equipamento','Incêndio','Evacuação','Outra situação de emergência'];
+
+function renderRegistrar(){
+  const d = state.formDraft || {type:'Vazamento', description:'', location:'', area:'Produção — Reatores', criticality:'medio', responsible:'Segurança do Trabalho', observations:'', brigada:false};
+  if(state.lastConfirmedProtocol){
+    const proto = state.lastConfirmedProtocol;
+    return `
+    <div class="card confirm-box">
+      <div class="confirm-icon">${ICONS.check}</div>
+      <h2 style="font-size:20px;">Ocorrência registrada com sucesso</h2>
+      <div class="muted" style="margin-top:6px;">A ocorrência foi encaminhada automaticamente ao setor responsável e os alertas necessários já foram emitidos.</div>
+      <div class="protocol">${proto}</div>
+      <div class="dim" style="font-size:11.5px;text-transform:uppercase;font-weight:700;">Número de protocolo</div>
+      <div class="form-actions" style="margin-top:26px;">
+        <button class="btn" onclick="state.lastConfirmedProtocol=null; state.formDraft=null; navigate('dashboard')">Voltar ao painel</button>
+        <button class="btn btn-maroon" onclick="abrirOcorrencia('${proto}')">Ver detalhes</button>
+      </div>
+    </div>`;
+  }
+
+  return `
+    <div class="sheet-head"><div><h1>Registrar Ocorrência / Risco</h1><span class="muted" style="font-size:13px;">Preencha as informações abaixo</span></div></div>
+    <div class="emg-banner">${ICONS.bolt} É uma emergência agora? <button onclick="abrirEmergencia()">Registro rápido</button></div>
+    <div class="card panel-pad">
+      <div class="form-section">
+        <label>Tipo de risco</label>
+        <div class="option-grid">
+          ${RISK_TYPES.map(t=>`<button type="button" class="option-box ${d.type===t?'selected':''}" onclick="setDraftField('type','${t}')">${t}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">Descrição da situação</label>
+        <textarea id="f-desc" placeholder="Descreva o que foi observado...">${d.description}</textarea>
+      </div>
+
+      <div class="form-section form-grid-2">
+        <div><label class="field-label">Localização</label><input id="f-loc" type="text" placeholder="Ex.: Tanque T-12, Baia 3..." value="${d.location}"></div>
+        <div><label class="field-label">Área / setor</label>
+          <select id="f-area">
+            ${['Produção — Reatores','Tancagem','Utilidades','Expedição','Administrativo','Manutenção Elétrica'].map(a=>`<option ${d.area===a?'selected':''}>${a}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label>Nível de criticidade</label>
+        <div class="crit-row">
+          ${['baixo','medio','alto','critico'].map(c=>`<button type="button" class="crit-box sel-${c} ${d.criticality===c?'selected':''}" onclick="setDraftField('criticality','${c}')">${fmtCrit(c)}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="form-section form-grid-2">
+        <div><label class="field-label">Data e hora</label><input id="f-datetime" type="datetime-local" value="${new Date().toISOString().slice(0,16)}"></div>
+        <div><label class="field-label">Responsável / setor</label>
+          <select id="f-resp">
+            ${['Segurança do Trabalho','Manutenção Elétrica','Setor da área','Administrador/TI'].map(r=>`<option ${d.responsible===r?'selected':''}>${r}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">Resposta de emergência</label>
+        <button type="button" class="toggle-row" onclick="toggleBrigada()">
+          <div>
+            <b style="display:block;font-size:13.5px;">Acionar Brigada de Emergência</b>
+            <span class="dim" style="font-size:12px;">A ocorrência continua sob responsabilidade do setor acima — a Brigada só atua na resposta imediata em campo. Geralmente necessário em criticidade alta ou crítica.</span>
+          </div>
+          <div class="toggle-switch ${d.brigada?'on':''}"><div class="toggle-knob"></div></div>
+        </button>
+      </div>
+
+      <div class="form-section">
+        <label class="field-label">Observações (opcional)</label>
+        <textarea id="f-obs" placeholder="Informações adicionais relevantes...">${d.observations}</textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" onclick="navigate('dashboard')">Cancelar</button>
+        <button class="btn btn-maroon btn-lg" onclick="submitOccurrence()">Registrar ocorrência</button>
+      </div>
+      ${state.registrarError ? '<div class="field-error" style="margin-top:12px;">'+state.registrarError+'</div>' : ''}
+    </div>`;
+}
+
+function setDraftField(key, val){
+  captureDraft();
+  state.formDraft[key] = val;
+  if(key==='criticality'){
+    state.formDraft.brigada = (val==='alto' || val==='critico');
+  }
+  render();
+}
+function toggleBrigada(){
+  captureDraft();
+  state.formDraft.brigada = !state.formDraft.brigada;
+  render();
+}
+function captureDraft(){
+  if(state.formDraft) return;
+  state.formDraft = {type:'Vazamento', description:'', location:'', area:'Produção — Reatores', criticality:'medio', responsible:'Segurança do Trabalho', observations:'', brigada:false};
+}
+
+function submitOccurrence(){
+  captureDraft();
+  const type = state.formDraft.type;
+  const description = document.getElementById('f-desc').value.trim();
+  const location = document.getElementById('f-loc').value.trim();
+  const area = document.getElementById('f-area').value;
+  const criticality = state.formDraft.criticality;
+  const responsible = document.getElementById('f-resp').value;
+  const observations = document.getElementById('f-obs').value.trim();
+  const brigada = !!state.formDraft.brigada;
+
+  if(!description || !location){
+    state.registrarError = 'Preencha ao menos a descrição e a localização da ocorrência.';
+    render();
+    return;
+  }
+  state.registrarError = '';
+
+  occurrenceSeq += 1;
+  const protocol = 'OC-2026-' + occurrenceSeq;
+  const now = new Date();
+  const nowLabel = formatDatetime(now.toISOString());
+
+  const encaminhadaNote = 'Encaminhada automaticamente para '+responsible+'.' + (brigada ? ' Brigada de Emergência acionada para resposta imediata em campo.' : '');
+  const newOcc = {
+    id: protocol, type, description, location, area, criticality,
+    datetime: now.toISOString(), responsible, status: 'Encaminhada', observations,
+    history:[
+      {step:'Registrada', by:state.user.name, at:nowLabel, note:'Ocorrência registrada pelo usuário.'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:nowLabel, note:encaminhadaNote},
+    ], alertsSent:[]
+  };
+
+  const alertId = 'AL-' + (3300 + state.alerts.length + 4);
+  const targetRolesByCrit = {baixo:['setor'], medio:['seguranca','setor'], alto:['seguranca'], critico:['seguranca','admin']};
+  const targetRoles = [...targetRolesByCrit[criticality]];
+  if(brigada && !targetRoles.includes('brigadista')) targetRoles.push('brigadista');
+  const newAlert = {
+    id:alertId, occurrenceId:protocol, level:criticality, category:'Ocorrência',
+    title:type+' — '+location, message:description || 'Nova ocorrência registrada no PRECOR.',
+    area, targetRoles, timestamp: nowLabel, confirmations:[], read:false
+  };
+
+  newOcc.alertsSent.push(alertId);
+  state.occurrences.unshift(newOcc);
+  state.alerts.unshift(newAlert);
+  state.lastConfirmedProtocol = protocol;
+  state.formDraft = null;
+  logAudit('Ocorrência registrada', protocol+' — '+type+' ('+fmtCrit(criticality)+', '+location+')');
+  if(criticality==='critico'){
+    showToast('Ocorrência crítica registrada: '+type+' — '+location, 'critico');
+  } else if(brigada){
+    showToast('Brigada de Emergência acionada: '+type+' — '+location, 'critico');
+  }
+  render();
+}
+
+/* ============================= EMERGÊNCIA (fluxo rápido) ============================= */
+
+function abrirEmergencia(){
+  state.emergencyStep = 1;
+  state.emergencyDraft = {type:'', location:'', detail:''};
+  state.lastEmergencyProtocol = null;
+  navigate('emergencia');
+}
+function cancelEmergency(){ navigate('dashboard'); }
+
+function selectEmergencyType(type){
+  state.emergencyDraft.type = type;
+  state.emergencyStep = 2;
+  render();
+  setTimeout(()=>{ const i=document.getElementById('emg-loc'); if(i) i.focus(); }, 30);
+}
+
+function voltarEmergencyTipo(){ state.emergencyStep = 1; render(); }
+
+function submitEmergency(){
+  const location = document.getElementById('emg-loc').value.trim();
+  const detail = document.getElementById('emg-detail') ? document.getElementById('emg-detail').value.trim() : '';
+  if(!location){
+    state.emergencyError = 'Informe rapidamente o local da emergência.';
+    render();
+    setTimeout(()=>{ const i=document.getElementById('emg-loc'); if(i) i.focus(); }, 30);
+    return;
+  }
+  state.emergencyError = '';
+
+  occurrenceSeq += 1;
+  const protocol = 'OC-2026-' + occurrenceSeq;
+  const now = new Date();
+  const nowLabel = formatDatetime(now.toISOString());
+  const type = state.emergencyDraft.type;
+
+  const newOcc = {
+    id: protocol, type, description: detail || ('Emergência registrada via fluxo rápido: '+type+'.'),
+    location, area: location, criticality:'critico',
+    datetime: now.toISOString(), responsible:'Brigada de Emergência', status:'Encaminhada',
+    observations:'Registrada pelo fluxo rápido de emergência.',
+    history:[
+      {step:'Registrada', by:state.user.name, at:nowLabel, note:'Registrada via fluxo rápido de emergência (registro simplificado).'},
+      {step:'Encaminhada', by:'Sistema PRECOR', at:nowLabel, note:'Encaminhamento automático crítico para Brigada, Segurança do Trabalho e Administração.'},
+    ], alertsSent:[]
+  };
+
+  const alertId = 'AL-' + (3300 + state.alerts.length + 4);
+  const newAlert = {
+    id:alertId, occurrenceId:protocol, level:'critico', category:'Emergência',
+    title:type+' — '+location, message: detail || ('Emergência reportada em '+location+'. Ação imediata necessária.'),
+    area: location, targetRoles:['brigadista','seguranca','admin'], timestamp: nowLabel, confirmations:[], read:false
+  };
+
+  newOcc.alertsSent.push(alertId);
+  state.occurrences.unshift(newOcc);
+  state.alerts.unshift(newAlert);
+  state.lastEmergencyProtocol = protocol;
+  logAudit('Emergência registrada (fluxo rápido)', protocol+' — '+type+' ('+location+')');
+  showToast('Emergência registrada: '+type+' — '+location, 'critico');
+  render();
+}
+
+function renderEmergencia(){
+  if(state.lastEmergencyProtocol){
+    const proto = state.lastEmergencyProtocol;
+    return `
+    <div class="emg-wrap">
+      <div class="card confirm-box">
+        <div class="emg-confirm-icon">${ICONS.check}</div>
+        <h2 style="font-size:20px;">Alerta enviado</h2>
+        <div class="muted" style="margin-top:6px;">Brigada de Emergência, Segurança do Trabalho e Administração foram notificados imediatamente.</div>
+        <div class="protocol">${proto}</div>
+        <div class="dim" style="font-size:11.5px;text-transform:uppercase;font-weight:700;">Número de protocolo</div>
+        <div class="form-actions" style="margin-top:26px;">
+          <button class="btn" onclick="navigate('dashboard')">Voltar ao painel</button>
+          <button class="btn btn-maroon" onclick="abrirOcorrencia('${proto}')">Ver ocorrência</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(state.emergencyStep===1){
+    return `
+    <div class="emg-wrap">
+      <div class="emg-head">
+        <div class="emg-icon">${ICONS.boltLg}</div>
+        <h1>O que está acontecendo?</h1>
+        <p>Toque no tipo da emergência. Sem formulários — o alerta é enviado em poucos toques.</p>
+      </div>
+      <div class="emg-tile-grid">
+        ${EMERGENCY_TYPES.map(e=>`<button class="emg-tile" onclick="selectEmergencyType('${e.type}')">${e.icon}${e.type}</button>`).join('')}
+      </div>
+      <button class="emg-cancel" onclick="cancelEmergency()">Cancelar</button>
+    </div>`;
+  }
+
+  const d = state.emergencyDraft;
+  return `
+    <div class="emg-wrap">
+      <div class="emg-selected-tag">${ICONS.bolt} ${d.type}<button onclick="voltarEmergencyTipo()">Trocar</button></div>
+      <div class="emg-head" style="margin-bottom:16px;">
+        <h1 style="font-size:19px;">Onde está acontecendo?</h1>
+      </div>
+      <input id="emg-loc" class="emg-big-input" type="text" placeholder="Ex.: Baia 3, Reator R-02..." value="${d.location}" autofocus>
+      <input id="emg-detail" class="emg-big-input" style="font-size:14px;padding:14px 16px;" type="text" placeholder="Detalhe rápido (opcional)" value="${d.detail}">
+      ${state.emergencyError ? '<div class="field-error">'+state.emergencyError+'</div>' : ''}
+      <button class="emg-submit" onclick="submitEmergency()">Enviar alerta agora</button>
+      <button class="emg-cancel" onclick="cancelEmergency()">Cancelar</button>
+    </div>`;
+}
+
+/* ============================= LISTAS DE OCORRÊNCIAS ============================= */
+
+function renderOcorrencias(){
+  const statusTabs = ['Todas','Abertas','Em Andamento','Concluídas'];
+  const critTabs = ['Todos','critico','alto','medio','baixo'];
+  let list = occurrencesForUser(state.user);
+  if(state.occStatusTab==='Abertas') list = list.filter(o=>o.status==='Registrada'||o.status==='Encaminhada');
+  else if(state.occStatusTab==='Em Andamento') list = list.filter(o=>o.status==='Em atendimento'||o.status==='Resolvida');
+  else if(state.occStatusTab==='Concluídas') list = list.filter(o=>o.status==='Encerrada');
+  if(state.occCritTab!=='Todos') list = list.filter(o=>o.criticality===state.occCritTab);
+  if(state.occSearch.trim()) list = list.filter(o=>(o.type+' '+o.location+' '+o.area).toLowerCase().includes(state.occSearch.toLowerCase()));
+
+  return `
+    <div class="dim" style="font-size:12.5px;font-weight:600;margin-bottom:14px;">${scopeDescription(state.user)}</div>
+    <div class="search-box">${ICONS.search}<input type="text" placeholder="Buscar por título ou área..." value="${state.occSearch}" oninput="state.occSearch=this.value; render();"></div>
+    <div class="chip-row">${statusTabs.map(s=>`<button class="chip ${state.occStatusTab===s?'active':''}" onclick="state.occStatusTab='${s}'; render();">${s}</button>`).join('')}</div>
+    <div class="chip-row">${critTabs.map(c=>`<button class="chip ${state.occCritTab===c?'active':''}" onclick="state.occCritTab='${c}'; render();">${c==='Todos'?'Todos':fmtCrit(c)}</button>`).join('')}</div>
+    <div class="results-count">${list.length} ocorrência${list.length===1?'':'s'} encontrada${list.length===1?'':'s'}</div>
+    ${list.length===0 ? '<div class="card empty-state">Nenhuma ocorrência corresponde ao seu escopo ou aos filtros selecionados.</div>' : list.map(o=>`
+      <div class="card occ-card" onclick="abrirOcorrencia('${o.id}')">
+        <div class="occ-top"><b>${o.type} — ${o.location}</b>${critBadge(o.criticality)}</div>
+        <div class="occ-tags">${o.id} ${statusBadge(o.status)}</div>
+        <div class="occ-meta">${o.area} · ${formatDatetime(o.datetime)}</div>
+      </div>`).join('')}`;
+}
+
+function abrirOcorrencia(id){ navigate('detalhe', {selectedOccurrenceId:id}); }
+
+/* ============================= DETALHE DA OCORRÊNCIA ============================= */
+
+function renderDetalhe(){
+  const o = findOccurrence(state.selectedOccurrenceId);
+  if(!o) return '<div class="empty-state">Ocorrência não encontrada.</div>';
+  const stepIndex = TIMELINE_STEPS.indexOf(o.status);
+  const relatedAlerts = state.alerts.filter(a=>o.alertsSent.includes(a.id));
+  const canAdvance = canAdvanceOccurrence(o, state.user);
+  const canClose = canCloseOccurrence(o, state.user);
+  const nextStep = TIMELINE_STEPS[stepIndex+1];
+  const advanceLabel = nextStep==='Resolvida' ? 'Marcar como resolvida' : 'Avançar para "'+nextStep+'"';
+
+  const backTarget = ROLE_NAV[state.user.role].includes('gestao') ? 'gestao' : (ROLE_NAV[state.user.role].includes('ocorrencias') ? 'ocorrencias' : 'alertas');
+
+  let actionBlock = '';
+  const brigadistaResolving = state.user.role==='brigadista' && nextStep==='Resolvida';
+  if(state.resolveNoteOpen && state.resolveNoteOccId===o.id){
+    actionBlock = `
+      <div class="dupcheck-box" style="background:var(--teal-bg);border-color:#bfe3da;">
+        <div class="dupcheck-label" style="color:var(--teal);">${ICONS.check} Como a ocorrência foi resolvida?</div>
+        <p>Descreva rapidamente as ações tomadas em campo e, se necessário, anexe uma foto como comprovação. A Segurança do Trabalho verá esse relato no duplo-check de encerramento.</p>
+        <textarea id="resolve-note" placeholder="Ex.: Vazamento contido, área isolada, produto recolhido, equipe liberada em segurança..."></textarea>
+        ${state.resolveError ? '<div class="field-error">'+state.resolveError+'</div>' : ''}
+        ${renderAttachWidget('resolveNoteImage','resolveNoteImageName')}
+        <div class="form-actions" style="margin-top:12px;">
+          <button class="btn" onclick="cancelarResolucao()">Cancelar</button>
+          <button class="btn btn-maroon" onclick="confirmarResolucao('${o.id}')">Confirmar resolução</button>
+        </div>
+      </div>`;
+  } else if(canClose){
+    actionBlock = `
+      <div class="dupcheck-box">
+        <div class="dupcheck-label">${ICONS.check} Duplo-check de encerramento — Segurança do Trabalho</div>
+        <p>A ocorrência foi marcada como resolvida. Confirme se a resolução foi efetiva antes de encerrar definitivamente.</p>
+        <div class="form-actions">
+          <button class="btn" onclick="reabrirOcorrencia('${o.id}')">Reabrir — não foi resolvida</button>
+          <button class="btn btn-maroon" onclick="confirmarEncerramento('${o.id}')">Confirmar encerramento</button>
+        </div>
+      </div>`;
+  } else if(o.status==='Resolvida' && o.status!=='Encerrada'){
+    actionBlock = `<div class="dim" style="font-size:12.5px;margin-top:16px;">${ICONS.check} Marcada como resolvida — aguardando confirmação de encerramento pela Segurança do Trabalho.</div>`;
+  } else if(state.advanceFormOpen && state.advanceFormOccId===o.id){
+    actionBlock = `
+      <div class="dupcheck-box" style="background:var(--blue-bg);border-color:#c7d7f5;">
+        <div class="dupcheck-label" style="color:var(--blue);">${ICONS.check} ${advanceLabel}</div>
+        <p>Adicione uma observação e, se necessário, anexe uma imagem como comprovação antes de confirmar.</p>
+        <textarea id="advance-note" placeholder="Observação (opcional)"></textarea>
+        ${renderAttachWidget('advanceFormImage','advanceFormImageName')}
+        <div class="form-actions" style="margin-top:12px;">
+          <button class="btn" onclick="cancelarAvanco()">Cancelar</button>
+          <button class="btn btn-maroon" onclick="confirmarAvanco('${o.id}')">Confirmar</button>
+        </div>
+      </div>`;
+  } else if(canAdvance && nextStep){
+    const onclickAction = brigadistaResolving ? `abrirResolucaoForm('${o.id}')` : `abrirAvancoForm('${o.id}')`;
+    actionBlock = `<div class="form-actions" style="margin-top:16px;"><button class="btn btn-maroon" onclick="${onclickAction}">${advanceLabel}</button></div>`;
+  }
+
+  return `
+    <div class="breadcrumb no-print"><button onclick="navigate('${backTarget}')">← Voltar</button></div>
+    <div class="print-header"><b>PRECOR</b> — Relatório de Ocorrência<br><span>Gerado em ${formatDatetime(new Date().toISOString())} · Ferramenta complementar de segurança — não substitui alarmes, procedimentos ou sistemas de segurança industrial.</span></div>
+    <div class="page-head">
+      <div><h1>${o.type} <span class="dim mono" style="font-size:14px;">${o.id}</span></h1><div class="muted">${o.location}</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        ${critBadge(o.criticality)}${statusBadge(o.status)}
+        <button class="btn btn-sm no-print" onclick="window.print()" title="Exportar relatório desta ocorrência">${ICONS.doc} PDF</button>
+      </div>
+    </div>
+
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="timeline">
+        ${TIMELINE_STEPS.map((s,i)=>`<div class="tl-step ${i<stepIndex?'done':''} ${i===stepIndex?'current':''}"><div class="tl-dot"></div><span>${s}</span></div>`).join('')}
+      </div>
+    </div>
+
+    ${state.user.role==='brigadista' && isRelevantToBrigadista(o) && o.status!=='Encerrada' ? renderSuggestedProcedures(o) : ''}
+
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="section-title"><h3>Informações da ocorrência</h3></div>
+      <div class="detail-grid">
+        <div class="dg-item"><span>Tipo de risco</span><b>${o.type}</b></div>
+        <div class="dg-item"><span>Área / setor</span><b>${o.area}</b></div>
+        <div class="dg-item"><span>Criticidade</span><b>${fmtCrit(o.criticality)}</b></div>
+        <div class="dg-item"><span>Data e hora</span><b>${formatDatetime(o.datetime)}</b></div>
+        <div class="dg-item"><span>Responsável</span><b>${o.responsible}</b></div>
+        <div class="dg-item"><span>Status atual</span><b>${o.status}</b></div>
+      </div>
+      <div class="dg-item" style="margin-bottom:14px;"><span>Descrição</span><b style="font-weight:500;">${o.description}</b></div>
+      ${o.observations ? '<div class="dg-item"><span>Observações</span><b style="font-weight:500;">'+o.observations+'</b></div>' : ''}
+      ${actionBlock}
+    </div>
+
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="section-title"><h3>Histórico de atualizações</h3></div>
+      ${o.history.map(h=>`<div class="log-item"><div class="log-dot"></div><div><b>${h.step} — ${h.by}</b><span>${h.at} · ${h.note}</span>${h.image ? '<img class="history-image" src="'+h.image+'" alt="Comprovação anexada" onclick="window.open(this.src)">' : ''}</div></div>`).join('')}
+    </div>
+
+    <div class="card panel-pad">
+      <div class="section-title"><h3>Alertas enviados</h3></div>
+      ${relatedAlerts.length ? relatedAlerts.map(a=>`<div class="log-item"><div class="log-dot" style="background:var(--red);"></div><div><b>${a.title}</b><span>${a.timestamp} · Confirmado por: ${a.confirmations.length ? a.confirmations.join(', ') : 'ninguém ainda'}</span></div></div>`).join('') : '<div class="dim">Nenhum alerta associado.</div>'}
+    </div>`;
+}
+
+function confirmarEncerramento(id){
+  const o = findOccurrence(id);
+  o.status = 'Encerrada';
+  o.history.push({step:'Encerrada', by:state.user.name, at:formatDatetime(new Date().toISOString()), note:'Encerramento confirmado após verificação da Segurança do Trabalho (duplo-check).'});
+  showToast('Ocorrência '+o.id+' encerrada.', 'sucesso');
+  logAudit('Ocorrência encerrada', o.id+' — '+o.type+' ('+o.location+')');
+  render();
+}
+function reabrirOcorrencia(id){
+  const o = findOccurrence(id);
+  o.status = 'Em atendimento';
+  o.history.push({step:'Em atendimento', by:state.user.name, at:formatDatetime(new Date().toISOString()), note:'Ocorrência reaberta — resolução não confirmada no duplo-check da Segurança do Trabalho.'});
+  showToast('Ocorrência '+o.id+' reaberta.', 'alerta');
+  logAudit('Ocorrência reaberta', o.id+' — '+o.type+' ('+o.location+')');
+  render();
+}
+
+function abrirResolucaoForm(id){
+  state.resolveNoteOpen = true;
+  state.resolveNoteOccId = id;
+  state.resolveNoteImage = null;
+  state.resolveNoteImageName = '';
+  state.resolveError = '';
+  render();
+  setTimeout(()=>{ const i=document.getElementById('resolve-note'); if(i) i.focus(); }, 30);
+}
+function cancelarResolucao(){
+  state.resolveNoteOpen = false;
+  state.resolveNoteOccId = null;
+  state.resolveNoteImage = null;
+  state.resolveNoteImageName = '';
+  state.resolveError = '';
+  render();
+}
+function confirmarResolucao(id){
+  const texto = document.getElementById('resolve-note').value.trim();
+  if(!texto){
+    state.resolveError = 'Descreva rapidamente como a ocorrência foi resolvida.';
+    render();
+    return;
+  }
+  const o = findOccurrence(id);
+  o.status = 'Resolvida';
+  const entry = {step:'Resolvida', by:state.user.name, at:formatDatetime(new Date().toISOString()), note:texto};
+  if(state.resolveNoteImage) entry.image = state.resolveNoteImage;
+  o.history.push(entry);
+  state.resolveNoteOpen = false;
+  state.resolveNoteOccId = null;
+  state.resolveNoteImage = null;
+  state.resolveNoteImageName = '';
+  state.resolveError = '';
+  showToast('Ocorrência marcada como resolvida. Aguardando duplo-check.', 'sucesso');
+  logAudit('Ocorrência marcada como resolvida', o.id+' — '+o.type+' ('+o.location+')');
+  render();
+}
+
+function abrirAvancoForm(id){
+  state.advanceFormOpen = true;
+  state.advanceFormOccId = id;
+  state.advanceFormImage = null;
+  state.advanceFormImageName = '';
+  render();
+  setTimeout(()=>{ const t=document.getElementById('advance-note'); if(t) t.focus(); }, 30);
+}
+function cancelarAvanco(){
+  state.advanceFormOpen = false;
+  state.advanceFormOccId = null;
+  state.advanceFormImage = null;
+  state.advanceFormImageName = '';
+  render();
+}
+function confirmarAvanco(id){
+  const o = findOccurrence(id);
+  const idx = TIMELINE_STEPS.indexOf(o.status);
+  const next = TIMELINE_STEPS[idx+1];
+  if(!next || next==='Encerrada') return; // encerramento passa pelo duplo-check dedicado
+  const noteInput = document.getElementById('advance-note');
+  const customNote = noteInput ? noteInput.value.trim() : '';
+  o.status = next;
+  const entry = {step:next, by:state.user.name, at:formatDatetime(new Date().toISOString()), note: customNote || ('Status atualizado manualmente por '+ROLE_LABELS[state.user.role]+'.')};
+  if(state.advanceFormImage) entry.image = state.advanceFormImage;
+  o.history.push(entry);
+  state.advanceFormOpen = false;
+  state.advanceFormOccId = null;
+  state.advanceFormImage = null;
+  state.advanceFormImageName = '';
+  showToast('Ocorrência '+o.id+' avançada para "'+next+'".', 'sucesso');
+  logAudit('Status de ocorrência atualizado', o.id+' → "'+next+'"');
+  render();
+}
+
+function handleImageFile(inputEl, imageKey, nameKey){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ showToast('Selecione um arquivo de imagem.', 'alerta'); return; }
+  const maxBytes = 5*1024*1024;
+  if(file.size > maxBytes){ showToast('Imagem muito grande (máx. 5MB). Escolha um arquivo menor.', 'alerta'); return; }
+  state[imageKey+'Loading'] = true;
+  render();
+  const reader = new FileReader();
+  reader.onload = function(e){
+    state[imageKey] = e.target.result;
+    state[nameKey] = file.name;
+    state[imageKey+'Loading'] = false;
+    render();
+  };
+  reader.onerror = function(){
+    state[imageKey+'Loading'] = false;
+    showToast('Não foi possível ler a imagem. Tente novamente.', 'alerta');
+    render();
+  };
+  reader.readAsDataURL(file);
+}
+function removeAttachedImage(imageKey, nameKey){
+  state[imageKey] = null;
+  state[nameKey] = '';
+  render();
+}
+function renderAttachWidget(imageKey, nameKey){
+  const img = state[imageKey];
+  if(state[imageKey+'Loading']){
+    return `<div class="attach-row"><div class="attach-loading">${ICONS.info} Carregando imagem…</div></div>`;
+  }
+  if(img){
+    return `<div class="attach-row"><div class="attach-preview"><img src="${img}" alt="Comprovação anexada"><button class="attach-remove" onclick="removeAttachedImage('${imageKey}','${nameKey}')" title="Remover imagem" aria-label="Remover imagem">${ICONS.trash}</button></div><div class="dim" style="font-size:11px;margin-top:4px;">${state[nameKey]}</div></div>`;
+  }
+  return `<div class="attach-row"><label class="attach-btn">${ICONS.camera} Anexar imagem (opcional, máx. 5MB)<input type="file" accept="image/*" onchange="handleImageFile(this,'${imageKey}','${nameKey}')"></label></div>`;
+}
+
+/* ============================= CENTRAL DE ALERTAS ============================= */
+
+function renderAlertas(){
+  const u = state.user;
+  const naoLidos = state.alerts.filter(a=>!a.read);
+  const criticos = state.alerts.filter(a=>a.level==='critico');
+  let list;
+  if(state.alertTab==='nao-lidos') list = naoLidos;
+  else if(state.alertTab==='criticos') list = criticos;
+  else list = state.alerts;
+
+  return `
+    <div class="tab-row">
+      <button class="chip ${state.alertTab==='todos'?'active':''}" onclick="setAlertTab('todos')">Todos (${state.alerts.length})</button>
+      <button class="chip ${state.alertTab==='nao-lidos'?'active':''}" onclick="setAlertTab('nao-lidos')">Não lidos (${naoLidos.length})</button>
+      <button class="chip ${state.alertTab==='criticos'?'active':''}" onclick="setAlertTab('criticos')">Críticos</button>
+      <button class="btn-link" style="margin-left:auto;" onclick="marcarTodasLidas()">Marcar todas como lidas</button>
+    </div>
+    ${list.length===0 ? '<div class="card empty-state">Nenhum alerta nesta categoria.</div>' : list.map(a=>{
+      const linkedOcc = a.occurrenceId!=='—' ? findOccurrence(a.occurrenceId) : null;
+      const confirmed = a.confirmations.includes(u.name);
+      const canAttend = linkedOcc && occurrenceInScope(linkedOcc, u);
+      return `
+      <div class="card alert-card ${a.level}">
+        <div class="alert-tags">
+          <span class="badge badge-outline">${a.category}</span>
+          ${critBadge(a.level)}
+          ${!a.read ? '<span class="badge badge-novo">Novo</span>' : ''}
+          ${linkedOcc ? statusBadge(linkedOcc.status) : ''}
+        </div>
+        <b class="a-title">${a.title}</b>
+        <p>${a.message}</p>
+        <div class="alert-meta-row"><span>${a.timestamp}</span><span>${a.area}</span></div>
+        <div class="alert-actions">
+          ${!a.read ? '<button class="btn btn-sm" onclick="marcarLida(\''+a.id+'\')">Marcar lida</button>' : ''}
+          ${confirmed
+            ? '<span class="badge badge-encerrada">'+ICONS.check+' Confirmado</span>' + (linkedOcc ? '<button class="btn btn-sm" onclick="abrirOcorrencia(\''+a.occurrenceId+'\')">Ver ocorrência</button>' : '')
+            : (canAttend
+                ? '<button class="btn btn-maroon btn-sm" onclick="confirmarEAtender(\''+a.id+'\',\''+a.occurrenceId+'\')">Confirmar e atender ocorrência</button>'
+                : '<button class="btn btn-maroon btn-sm" onclick="confirmarAlerta(\''+a.id+'\')">Confirmar recebimento</button>' + (linkedOcc ? '<button class="btn btn-sm" onclick="abrirOcorrencia(\''+a.occurrenceId+'\')">Ver ocorrência</button>' : ''))}
+        </div>
+        ${!linkedOcc ? '<div class="dim" style="font-size:11.5px;margin-top:10px;">Alerta informativo — nenhuma ação adicional necessária.</div>' : ''}
+        ${linkedOcc && !canAttend && !confirmed ? '<div class="dim" style="font-size:11.5px;margin-top:10px;">Fora da sua área de atuação — apenas ciência.</div>' : ''}
+      </div>`;
+    }).join('')}`;
+}
+
+function setAlertTab(tab){ state.alertTab = tab; render(); }
+function marcarLida(id){ const a = state.alerts.find(x=>x.id===id); if(a) a.read=true; render(); }
+function marcarTodasLidas(){ state.alerts.forEach(a=>a.read=true); render(); }
+function confirmarAlerta(id){
+  const a = state.alerts.find(x=>x.id===id);
+  if(a){ if(!a.confirmations.includes(state.user.name)) a.confirmations.push(state.user.name); a.read=true; logAudit('Alerta confirmado', a.id+' — '+a.title); }
+  render();
+}
+function confirmarEAtender(alertId, occurrenceId){
+  const a = state.alerts.find(x=>x.id===alertId);
+  if(a){ if(!a.confirmations.includes(state.user.name)) a.confirmations.push(state.user.name); a.read=true; logAudit('Alerta confirmado e ocorrência atendida', a.id+' — '+a.title); }
+  abrirOcorrencia(occurrenceId);
+}
+
+/* ============================= PROCEDIMENTOS ============================= */
+
+function renderProcedimentos(){
+  const cats = ['Todos', ...new Set(state.procedures.map(p=>p.category))];
+  let list = state.procCategory==='Todos' ? state.procedures : state.procedures.filter(p=>p.category===state.procCategory);
+  if(state.procSearch.trim()) list = list.filter(p=>(p.title+' '+p.description+' '+p.category).toLowerCase().includes(state.procSearch.toLowerCase()));
+  const canManage = state.user.role==='seguranca' || state.user.role==='admin';
+
+  return `
+    <div class="search-box">${ICONS.search}<input type="text" placeholder="Buscar procedimentos..." value="${state.procSearch}" oninput="state.procSearch=this.value; render();"></div>
+    <div class="chip-row">${cats.map(c=>`<button class="chip ${state.procCategory===c?'active':''}" onclick="state.procCategory='${c}'; render();">${c}</button>`).join('')}</div>
+    <div class="results-count">${list.length} procedimento${list.length===1?'':'s'} encontrado${list.length===1?'':'s'}</div>
+    ${canManage ? '<button class="btn" style="margin-bottom:14px;" onclick="showToast(\'Cadastro de novo procedimento — funcionalidade de demonstração.\', \'info\')">+ Novo procedimento</button>' : ''}
+    ${list.map(p=>`
+      <div class="card proc-card" onclick="abrirProcedimento('${p.id}')">
+        <div class="proc-icon">${ICONS.doc}</div>
+        <div class="proc-body">
+          <span class="proc-cat-tag">${p.category}</span>
+          <h4>${p.title}</h4>
+          <p>${p.description}</p>
+          <div class="proc-meta-row"><span>${p.responsible}</span><span>Atualizado em ${p.lastUpdated}</span></div>
+        </div>
+      </div>`).join('')}`;
+}
+
+function abrirProcedimento(id){ navigate('procedimento-detalhe', {selectedProcedureId:id}); }
+
+function renderProcedimentoDetalhe(){
+  const p = findProcedure(state.selectedProcedureId);
+  if(!p) return '<div class="empty-state">Procedimento não encontrado.</div>';
+  return `
+    <div class="breadcrumb"><button onclick="navigate('procedimentos')">← Voltar à biblioteca</button></div>
+    <span class="proc-cat-tag">${p.category}</span>
+    <h1 style="font-size:21px;margin:10px 0 16px;">${p.title}</h1>
+    <div class="card panel-pad">
+      <p class="muted" style="margin-top:0;">${p.description}</p>
+      <div class="detail-grid" style="margin:16px 0;">
+        <div class="dg-item"><span>Responsáveis</span><b>${p.responsible}</b></div>
+        <div class="dg-item"><span>Última atualização</span><b>${p.lastUpdated}</b></div>
+      </div>
+      <h3 style="font-size:15px;margin-bottom:6px;">Passos recomendados</h3>
+      <ul class="step-list">${p.steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+    </div>`;
+}
+
+/* ============================= MONITORAMENTO ============================= */
+
+function renderMonitoramento(){
+  const mySensors = sensorsForUser(state.user);
+  const anyCritico = mySensors.some(s=>sensorStatus(s)==='CRÍTICO');
+  return `
+    <div class="dim" style="font-size:12.5px;font-weight:600;margin-bottom:14px;">${scopeDescription(state.user)}</div>
+    <span class="exp-tag">${ICONS.pulse} Funcionalidade experimental — dados simulados de sensores</span>
+    ${anyCritico ? `<div class="crit-banner"><div class="cb-icon">${ICONS.bellLg}</div><div><b>Condição crítica identificada</b><span>Alerta gerado automaticamente na Central de Alertas</span></div></div>` : ''}
+
+    <div class="tab-row">
+      <button class="chip ${state.monitorTab==='tempo-real'?'active':''}" onclick="state.monitorTab='tempo-real'; render();">Sensores em tempo real</button>
+      <button class="chip ${state.monitorTab==='registro'?'active':''}" onclick="state.monitorTab='registro'; render();">Registro de leituras</button>
+    </div>
+
+    ${state.monitorTab==='tempo-real' ? renderMonitorTempoReal(mySensors) : renderMonitorRegistro(mySensors)}`;
+}
+
+function renderMonitorTempoReal(mySensors){
+  return `
+    <div class="form-actions" style="margin-bottom:16px;">
+      <button class="btn btn-maroon" onclick="simularAnormalidade()">Simular condição anormal</button>
+      <button class="btn" onclick="restaurarSensores()">Restaurar condição normal</button>
+    </div>
+    <div class="sensor-grid">
+      ${mySensors.map(s=>{
+        const st = sensorStatus(s);
+        const pct = Math.min(100, Math.max(0, s.direction==='alta' ? (s.value / s.limits.critico) * 100 : 100 - (s.value / s.base) * 60));
+        return `<div class="card sensor-card st-${sensorStatusClass(st)}">
+          <div class="sc-top"><div><div class="sc-name">${s.name}</div><div class="sc-area">${s.area}</div></div><span class="badge badge-${sensorStatusClass(st)}">${st}</span></div>
+          <div class="sc-val-row"><div class="sc-val">${s.value.toFixed(1)} <span class="dim" style="font-size:13px;">${s.unit}</span></div>${renderSparkline(s)}</div>
+          <div class="sc-range">Atenção: ${s.limits.atencao} ${s.unit} · Crítico: ${s.limits.critico} ${s.unit}</div>
+          <div class="scale"><div style="width:${pct}%;background:${st==='CRÍTICO'?'var(--red)':st==='ANORMAL'?'var(--orange)':st==='ATENÇÃO'?'var(--amber)':'var(--teal)'};"></div></div>
+          ${renderTrendLine(s)}
+        </div>`;
+      }).join('')}
+    </div>
+    ${mySensors.length===0 ? '<div class="card empty-state">Nenhum ponto de monitoramento associado ao seu setor.</div>' : ''}`;
+}
+
+function renderMonitorRegistro(mySensors){
+  const mySensorIds = mySensors.map(s=>s.id);
+  const myReadings = state.readings.filter(r=>mySensorIds.includes(r.sensorId));
+  const counts = {NORMAL:0,'ATENÇÃO':0,ANORMAL:0,'CRÍTICO':0};
+  const lastBySensor = {};
+  const sorted = [...myReadings].sort((a,b)=> a.datetime.localeCompare(b.datetime));
+  sorted.forEach(r=>{
+    const sensor = findSensorById(r.sensorId);
+    if(!sensor) return;
+    const st = statusForValue(sensor, r.value);
+    r._status = st;
+    counts[st] = (counts[st]||0) + 1;
+    lastBySensor[r.sensorId] = {reading:r, status:st};
+  });
+  const listDesc = [...myReadings].sort((a,b)=> b.datetime.localeCompare(a.datetime));
+
+  return `
+    <div class="kpi-grid" style="margin-bottom:18px;">
+      <div class="card kpi green"><div class="l">Normal</div><div class="n">${counts.NORMAL}</div></div>
+      <div class="card kpi amber"><div class="l">Atenção</div><div class="n">${counts['ATENÇÃO']}</div></div>
+      <div class="card kpi orange"><div class="l">Anormal</div><div class="n">${counts.ANORMAL}</div></div>
+      <div class="card kpi red"><div class="l">Crítico</div><div class="n">${counts['CRÍTICO']}</div></div>
+    </div>
+
+    <div class="section-title"><h3>Última leitura por sensor</h3></div>
+    <div class="card panel-pad" style="margin-bottom:20px;">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Sensor</th><th>Área</th><th>Última leitura</th><th>Valor</th><th>Status</th></tr></thead>
+        <tbody>
+          ${mySensors.map(s=>{
+            const info = lastBySensor[s.id];
+            return `<tr>
+              <td data-label="Sensor">${s.name}</td><td data-label="Área">${s.area}</td>
+              <td data-label="Última leitura">${info ? formatDatetime(info.reading.datetime) : '—'}</td>
+              <td data-label="Valor">${info ? info.reading.value + ' ' + s.unit : '—'}</td>
+              <td data-label="Status">${info ? '<span class="badge badge-'+sensorStatusClass(info.status)+'">'+info.status+'</span>' : '<span class="badge badge-outline">Sem leituras</span>'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>Histórico de leituras registradas</h3>
+      <button class="btn btn-maroon btn-sm" onclick="abrirFormLeitura()">+ Registrar leitura</button>
+    </div>
+
+    ${state.readingFormOpen ? renderReadingForm(mySensors) : ''}
+
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Data/Hora</th><th>Sensor</th><th>Valor</th><th>Status</th><th>Responsável</th><th>Observações</th></tr></thead>
+        <tbody>
+          ${listDesc.length===0 ? '' : listDesc.map(r=>{
+            const sensor = findSensorById(r.sensorId);
+            const st = sensor ? statusForValue(sensor, r.value) : '';
+            return `<tr>
+              <td data-label="Data/Hora">${formatDatetime(r.datetime)}</td>
+              <td data-label="Sensor">${sensor ? sensor.name : r.sensorId}</td>
+              <td data-label="Valor">${r.value} ${sensor ? sensor.unit : ''}</td>
+              <td data-label="Status"><span class="badge badge-${sensorStatusClass(st)}">${st}</span></td>
+              <td data-label="Responsável">${r.responsible}</td>
+              <td data-label="Observações">${r.observations||'—'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      </div>
+      ${listDesc.length===0 ? '<div class="empty-state">Nenhuma leitura registrada ainda.</div>' : ''}
+    </div>`;
+}
+
+function abrirFormLeitura(){
+  const mySensors = sensorsForUser(state.user);
+  state.readingFormOpen = true;
+  state.readingDraft = {sensorId: mySensors[0].id, value:'', responsible: state.user.name, observations:''};
+  state.readingError = '';
+  render();
+}
+function fecharFormLeitura(){ state.readingFormOpen = false; state.readingDraft = null; state.readingError = ''; render(); }
+function setReadingSensor(id){ state.readingDraft.sensorId = id; render(); }
+
+function renderReadingForm(mySensors){
+  const d = state.readingDraft;
+  const sensor = findSensorById(d.sensorId);
+  return `
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="form-section">
+        <label class="field-label">Sensor</label>
+        <select id="rd-sensor" onchange="setReadingSensor(this.value)">
+          ${mySensors.map(s=>`<option value="${s.id}" ${d.sensorId===s.id?'selected':''}>${s.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-section form-grid-2">
+        <div><label class="field-label">Valor lido (${sensor.unit})</label><input id="rd-value" type="text" inputmode="decimal" placeholder="Ex.: ${sensor.base}" value="${d.value}"></div>
+        <div><label class="field-label">Responsável pela leitura</label><input id="rd-resp" type="text" value="${d.responsible}"></div>
+      </div>
+      ${state.readingError ? '<div class="field-error">'+state.readingError+'</div>' : ''}
+      <div class="form-section">
+        <label class="field-label">Observações (opcional)</label>
+        <textarea id="rd-obs" placeholder="Observações da leitura...">${d.observations}</textarea>
+      </div>
+      <div class="dim" style="font-size:12px;margin-bottom:14px;">Limites de ${sensor.name}: Atenção ${sensor.limits.atencao} ${sensor.unit} · Anormal ${sensor.limits.anormal} ${sensor.unit} · Crítico ${sensor.limits.critico} ${sensor.unit}</div>
+      <div class="form-actions">
+        <button class="btn" onclick="fecharFormLeitura()">Cancelar</button>
+        <button class="btn btn-maroon" onclick="submitReading()">Salvar leitura</button>
+      </div>
+    </div>`;
+}
+
+function submitReading(){
+  const sensorId = state.readingDraft.sensorId;
+  const valueRaw = document.getElementById('rd-value').value.replace(',', '.').trim();
+  const value = parseFloat(valueRaw);
+  const responsible = document.getElementById('rd-resp').value.trim() || state.user.name;
+  const observations = document.getElementById('rd-obs').value.trim();
+  if(isNaN(value)){
+    state.readingError = 'Informe um valor numérico para a leitura.';
+    render();
+    return;
+  }
+
+  const sensor = findSensorById(sensorId);
+  const newReading = {
+    id: 'LT-' + String(state.readings.length + 1).padStart(3,'0'),
+    sensorId, datetime: new Date().toISOString(), value, responsible, observations
+  };
+  state.readings.unshift(newReading);
+
+  const st = statusForValue(sensor, value);
+  if(st==='CRÍTICO'){
+    state.alerts.unshift({
+      id:'AL-LT-'+Date.now().toString().slice(-4), occurrenceId:'—', level:'critico', category:'Monitoramento',
+      title:'Leitura crítica registrada — '+sensor.name,
+      message:'Leitura manual de '+value+' '+sensor.unit+' ultrapassou o limite crítico configurado para este ponto de monitoramento.',
+      area: sensor.area, targetRoles:['seguranca','brigadista','admin'], timestamp: formatDatetime(new Date().toISOString()), confirmations:[], read:false
+    });
+    showToast('Leitura crítica registrada — '+sensor.name, 'critico');
+  }
+
+  state.readingFormOpen = false;
+  state.readingDraft = null;
+  state.readingError = '';
+  logAudit('Leitura de sensor registrada', sensor.name+': '+value+' '+sensor.unit+' ('+st+')');
+  render();
+}
+
+function simularAnormalidade(){
+  stopMonitorJitter();
+  const pool = sensorsForUser(state.user);
+  const target = pool[Math.floor(Math.random()*pool.length)];
+  target.value = target.direction==='alta' ? target.limits.critico + target.limits.critico*0.05 : Math.max(0, target.limits.critico - target.limits.critico*0.4);
+  target._hist = (target._hist || []).concat(target.value).slice(-6);
+  state.monitorAnomalyActive = true;
+  state.alerts.unshift({
+    id:'AL-SIM-'+Date.now().toString().slice(-4), occurrenceId:'—', level:'critico', category:'Monitoramento',
+    title:'Condição anormal identificada — '+target.name,
+    message:'Leitura de '+target.value.toFixed(1)+' '+target.unit+' ultrapassou o limite crítico configurado para este ponto de monitoramento.',
+    area: target.area, targetRoles:['seguranca','brigadista','admin'], timestamp: formatDatetime(new Date().toISOString()), confirmations:[], read:false
+  });
+  showToast('Condição anormal identificada — '+target.name, 'critico');
+  logAudit('Anomalia simulada', target.name+' — leitura forçada para '+target.value.toFixed(1)+' '+target.unit);
+  render();
+}
+function restaurarSensores(){
+  state.sensors.forEach(s=>{ s.value = s.base; s._hist = []; s._predictiveAlerted = false; });
+  state.monitorAnomalyActive = false;
+  startMonitorJitter();
+  render();
+}
+function startMonitorJitter(){
+  stopMonitorJitter();
+  state.monitorSimTimer = setInterval(()=>{
+    if(state.monitorAnomalyActive) return;
+    state.sensors.forEach(s=>{
+      const delta = (Math.random()-0.5) * 2 * s.jitter;
+      let v = s.value + delta;
+      const floor = s.direction==='alta' ? s.base * 0.7 : s.limits.critico * 0.6;
+      const ceil = s.direction==='alta' ? s.limits.atencao * 0.96 : s.base * 1.15;
+      v = Math.min(ceil, Math.max(floor, v));
+      s.value = Math.round(v*10)/10;
+      s._hist = (s._hist || []).concat(s.value).slice(-6);
+    });
+    checkPredictiveAlerts();
+    if(state.screen==='monitoramento' || state.screen==='dashboard') render();
+  }, 3500);
+}
+function stopMonitorJitter(){ if(state.monitorSimTimer){ clearInterval(state.monitorSimTimer); state.monitorSimTimer=null; } }
+
+/* Fecha o ciclo "prevenção → ação": quando a tendência aponta que um sensor vai cruzar o
+   próximo limite em breve, gera um alerta preditivo para a Segurança do Trabalho ANTES do
+   limite ser de fato cruzado — sem isso, a predição seria só um número bonito na tela sem
+   nenhuma consequência real. Dispara uma única vez por episódio (reseta quando a condição
+   volta a estabilizar ou é restaurada). */
+function checkPredictiveAlerts(){
+  state.sensors.forEach(s=>{
+    const t = sensorTrend(s);
+    if(t.trend==='piorando' && t.etaMin && t.etaMin<=2){
+      if(!s._predictiveAlerted){
+        s._predictiveAlerted = true;
+        state.alerts.unshift({
+          id:'AL-PRED-'+Date.now().toString().slice(-4)+'-'+s.id, occurrenceId:'—',
+          level: t.nextLabel==='CRÍTICO' ? 'alto' : 'medio', category:'Monitoramento (Preditivo)',
+          title:'Previsão: '+s.name+' pode atingir '+t.nextLabel,
+          message:'A tendência das últimas leituras indica que este ponto pode cruzar o limite de '+t.nextLabel+' em aproximadamente '+t.etaMin+' minuto(s), caso a condição atual persista.',
+          area: s.area, targetRoles:['seguranca','admin'], timestamp: formatDatetime(new Date().toISOString()), confirmations:[], read:false
+        });
+        showToast('Previsão: '+s.name+' pode atingir '+t.nextLabel+' em ~'+t.etaMin+' min', 'alerta');
+        logAudit('Alerta preditivo gerado', s.name+' — previsão de '+t.nextLabel+' em ~'+t.etaMin+' min');
+      }
+    } else if(t.trend==='estavel' || t.trend==='melhorando' || t.trend==='critico'){
+      s._predictiveAlerted = false;
+    }
+  });
+}
+
+/* ---------- Tendência preditiva (regressão simples sobre o histórico recente) ----------
+   Estima, a partir da inclinação das últimas leituras, se a condição está piorando e em
+   quanto tempo tende a cruzar o próximo limite — transforma o monitoramento de reativo
+   (só avisa quando já cruzou o limite) em preventivo (avisa que está indo na direção errada). */
+function sensorTrend(sensor){
+  const hist = sensor._hist || [];
+  if(hist.length < 3) return {trend:'coletando'};
+  const first = hist[0], last = hist[hist.length-1];
+  const steps = hist.length - 1;
+  const slope = (last-first)/steps;
+  const st = sensorStatus(sensor);
+  if(st==='CRÍTICO') return {trend:'critico'};
+  const worsening = sensor.direction==='alta' ? slope > 0.12 : slope < -0.12;
+  const improving = sensor.direction==='alta' ? slope < -0.12 : slope > 0.12;
+  if(improving) return {trend:'melhorando'};
+  if(!worsening) return {trend:'estavel'};
+  const L = sensor.limits;
+  const target = st==='NORMAL' ? L.atencao : st==='ATENÇÃO' ? L.anormal : L.critico;
+  const nextLabel = st==='NORMAL' ? 'ATENÇÃO' : st==='ATENÇÃO' ? 'ANORMAL' : 'CRÍTICO';
+  const stepsToTarget = (target - last) / slope;
+  if(!isFinite(stepsToTarget) || stepsToTarget <= 0) return {trend:'piorando', etaMin:null, nextLabel};
+  const etaMin = Math.max(1, Math.round((stepsToTarget * 3.5) / 60));
+  return {trend:'piorando', etaMin, nextLabel};
+}
+function renderTrendLine(sensor){
+  const t = sensorTrend(sensor);
+  if(t.trend==='coletando' || t.trend==='critico') return '';
+  if(t.trend==='estavel') return '<div class="trend-line trend-stable">'+ICONS.trendFlat+' Estável</div>';
+  if(t.trend==='melhorando') return '<div class="trend-line trend-good">'+ICONS.trendDown+' Melhorando</div>';
+  const etaText = t.etaMin ? ' — pode atingir '+t.nextLabel+' em ~'+t.etaMin+' min' : '';
+  return '<div class="trend-line trend-bad">'+ICONS.trendUp+' Tendência de alta'+etaText+'</div>';
+}
+function renderSparkline(sensor){
+  const hist = sensor._hist || [];
+  if(hist.length < 2) return '';
+  const w = 70, h = 24, pad = 3;
+  const min = Math.min(...hist), max = Math.max(...hist);
+  const range = (max-min) || 1;
+  const stepX = hist.length>1 ? (w-pad*2)/(hist.length-1) : 0;
+  const points = hist.map((v,i)=>{
+    const x = pad + i*stepX;
+    const y = h-pad - ((v-min)/range)*(h-pad*2);
+    return x.toFixed(1)+','+y.toFixed(1);
+  }).join(' ');
+  const st = sensorStatus(sensor);
+  const color = st==='CRÍTICO' ? 'var(--red)' : st==='ANORMAL' ? 'var(--orange)' : st==='ATENÇÃO' ? 'var(--amber)' : 'var(--teal)';
+  return '<svg class="sparkline" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+points+'" fill="none" stroke="'+color+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+/* ============================= GESTÃO DE OCORRÊNCIAS ============================= */
+
+function renderGestao(){
+  return `
+    <div class="tab-row">
+      <button class="chip ${state.gestaoTab==='ocorrencias'?'active':''}" onclick="state.gestaoTab='ocorrencias'; render();">Ocorrências</button>
+      <button class="chip ${state.gestaoTab==='indicadores'?'active':''}" onclick="state.gestaoTab='indicadores'; render();">Indicadores</button>
+    </div>
+    ${state.gestaoTab==='indicadores' ? renderIndicadores() : renderGestaoOcorrencias()}`;
+}
+
+function renderGestaoOcorrencias(){
+  const f = state.gestaoFilters;
+  let list = state.occurrences;
+  if(f.area!=='Todas') list = list.filter(o=>o.area===f.area);
+  if(f.criticidade!=='Todas') list = list.filter(o=>o.criticality===f.criticidade);
+  if(f.status!=='Todas') list = list.filter(o=>o.status===f.status);
+  if(f.tipo!=='Todas') list = list.filter(o=>o.type===f.tipo);
+  if(f.data) list = list.filter(o=>o.datetime.slice(0,10)===f.data);
+  const areas = ['Todas', ...new Set(state.occurrences.map(o=>o.area))];
+  const tipos = ['Todas', ...new Set(state.occurrences.map(o=>o.type))];
+
+  return `
+    <div class="filters-row">
+      <input type="date" onchange="updGestaoFilter('data', this.value)" value="${f.data}">
+      <select onchange="updGestaoFilter('area', this.value)">${areas.map(a=>`<option ${f.area===a?'selected':''}>${a}</option>`).join('')}</select>
+      <select onchange="updGestaoFilter('criticidade', this.value)">
+        <option ${f.criticidade==='Todas'?'selected':''}>Todas</option>
+        ${['baixo','medio','alto','critico'].map(c=>`<option value="${c}" ${f.criticidade===c?'selected':''}>${fmtCrit(c)}</option>`).join('')}
+      </select>
+      <select onchange="updGestaoFilter('status', this.value)">
+        <option ${f.status==='Todas'?'selected':''}>Todas</option>
+        ${TIMELINE_STEPS.map(s=>`<option ${f.status===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+      <select onchange="updGestaoFilter('tipo', this.value)">${tipos.map(t=>`<option ${f.tipo===t?'selected':''}>${t}</option>`).join('')}</select>
+    </div>
+    <div class="form-actions" style="justify-content:flex-end;margin-bottom:14px;">
+      <button class="btn btn-sm" style="flex:none;" onclick="exportOccurrencesCSV()">${ICONS.doc} Exportar CSV (${list.length})</button>
+    </div>
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>ID</th><th>Data</th><th>Local</th><th>Tipo</th><th>Criticidade</th><th>Responsável</th><th>Status</th></tr></thead>
+        <tbody>
+          ${list.map(o=>`<tr onclick="abrirOcorrencia('${o.id}')">
+            <td class="mono" data-label="ID">${o.id}</td><td data-label="Data">${formatDatetime(o.datetime)}</td><td data-label="Local">${o.location}</td><td data-label="Tipo">${o.type}</td>
+            <td data-label="Criticidade">${critBadge(o.criticality)}</td><td data-label="Responsável">${o.responsible}</td><td data-label="Status">${statusBadge(o.status)}</td></tr>`).join('')}
+        </tbody>
+      </table>
+      </div>
+      ${list.length===0 ? '<div class="empty-state">Nenhuma ocorrência corresponde aos filtros selecionados.</div>' : ''}
+    </div>`;
+}
+function updGestaoFilter(key, val){ state.gestaoFilters[key]=val; render(); }
+
+function exportOccurrencesCSV(){
+  const f = state.gestaoFilters;
+  let list = state.occurrences;
+  if(f.area!=='Todas') list = list.filter(o=>o.area===f.area);
+  if(f.criticidade!=='Todas') list = list.filter(o=>o.criticality===f.criticidade);
+  if(f.status!=='Todas') list = list.filter(o=>o.status===f.status);
+  if(f.tipo!=='Todas') list = list.filter(o=>o.type===f.tipo);
+  if(f.data) list = list.filter(o=>o.datetime.slice(0,10)===f.data);
+
+  const headers = ['ID','Data','Local','Área','Tipo','Criticidade','Responsável','Status','Descrição'];
+  const rows = list.map(o=>[o.id, formatDatetime(o.datetime), o.location, o.area, o.type, fmtCrit(o.criticality), o.responsible, o.status, o.description]);
+  const csvEscape = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const csv = [headers, ...rows].map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'precor_ocorrencias_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  logAudit('Exportação CSV', list.length+' ocorrência(s) exportada(s) com os filtros atuais.');
+  showToast('CSV exportado: '+list.length+' ocorrência(s).', 'sucesso');
+}
+
+function renderBarList(title, entries, colorFn){
+  const max = Math.max(1, ...entries.map(e=>e[1]));
+  return `
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="section-title"><h3>${title}</h3></div>
+      ${entries.length===0 ? '<div class="dim" style="font-size:12.5px;">Sem dados suficientes.</div>' : entries.map(([label,count])=>`
+        <div class="bar-row">
+          <div class="bar-label">${label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(count/max*100).toFixed(0)}%;background:${colorFn(label)};"></div></div>
+          <div class="bar-count">${count}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderIndicadores(){
+  const all = state.occurrences;
+  const total = all.length;
+  const criticas = all.filter(o=>o.criticality==='critico').length;
+  const encerradas = all.filter(o=>o.status==='Encerrada').length;
+  const taxaEncerramento = total ? Math.round((encerradas/total)*100) : 0;
+  const pctCriticas = total ? Math.round((criticas/total)*100) : 0;
+
+  const porCriticidade = ['critico','alto','medio','baixo'].map(c=>[fmtCrit(c), all.filter(o=>o.criticality===c).length]).filter(e=>e[1]>0);
+  const critColor = {'Crítico':'var(--red)','Alto':'var(--orange)','Médio':'var(--amber)','Baixo':'var(--teal)'};
+
+  const areaCounts = {};
+  all.forEach(o=>{ areaCounts[o.area] = (areaCounts[o.area]||0)+1; });
+  const porArea = Object.entries(areaCounts).sort((a,b)=>b[1]-a[1]);
+
+  const tipoCounts = {};
+  all.forEach(o=>{ tipoCounts[o.type] = (tipoCounts[o.type]||0)+1; });
+  const porTipo = Object.entries(tipoCounts).sort((a,b)=>b[1]-a[1]);
+
+  return `
+    <div class="kpi-grid" style="margin-bottom:18px;">
+      <div class="card kpi blue"><div class="l">Total histórico</div><div class="n">${total}</div><div class="s">ocorrências</div></div>
+      <div class="card kpi red"><div class="l">Críticas</div><div class="n">${pctCriticas}%</div><div class="s">do total</div></div>
+      <div class="card kpi green"><div class="l">Taxa de encerramento</div><div class="n">${taxaEncerramento}%</div><div class="s">${encerradas} de ${total}</div></div>
+      <div class="card kpi amber"><div class="l">Áreas com registro</div><div class="n">${porArea.length}</div><div class="s">áreas distintas</div></div>
+    </div>
+    ${renderBarList('Ocorrências por criticidade', porCriticidade, l=>critColor[l]||'var(--maroon)')}
+    ${renderBarList('Ocorrências por área', porArea, ()=>'var(--maroon)')}
+    ${renderBarList('Ocorrências por tipo de risco', porTipo, ()=>'var(--blue)')}
+    <div class="dim" style="font-size:11.5px;text-align:center;margin-top:4px;">Indicadores calculados sobre o histórico completo registrado nesta sessão.</div>`;
+}
+
+/* ============================= USUÁRIOS & ÁREAS ============================= */
+
+function renderUsuarios(){
+  return `
+    <div class="page-head">
+      <div><h1 style="font-size:19px;">Administração</h1><div class="muted" style="font-size:13px;">Gestão de usuários, registro de alterações, histórico de acessos e configuração da unidade.</div></div>
+    </div>
+    <div class="tab-row">
+      <button class="chip ${state.adminTab==='usuarios'?'active':''}" onclick="state.adminTab='usuarios'; render();">Usuários (${DEMO_USERS.length})</button>
+      <button class="chip ${state.adminTab==='logs'?'active':''}" onclick="state.adminTab='logs'; render();">Registro de logs (${state.auditLog.length})</button>
+      <button class="chip ${state.adminTab==='logins'?'active':''}" onclick="state.adminTab='logins'; render();">Registro de logins (${state.loginLog.length})</button>
+      <button class="chip ${state.adminTab==='config'?'active':''}" onclick="state.adminTab='config'; render();">Configuração da Unidade</button>
+    </div>
+    ${state.adminTab==='usuarios' ? renderAdminUsuarios() : state.adminTab==='logs' ? renderAdminLogs() : state.adminTab==='logins' ? renderAdminLogins() : renderAdminConfig()}`;
+}
+
+function renderAdminConfig(){
+  const areas = [...new Set(DEMO_USERS.map(u=>u.area))];
+  return `
+    <div class="emg-banner" style="background:var(--blue-bg);border-color:#c7d7f5;color:#2a4a86;">
+      ${ICONS.info} Esta unidade (Sarapuí — Universal Chemical) está configurada abaixo. O PRECOR foi desenhado para que estes itens sejam adaptáveis a outras unidades ou organizações.
+    </div>
+
+    <div class="section-title"><h3>Tipos de risco monitorados</h3>
+      <button class="btn btn-sm" onclick="showToast('Cadastro de novo tipo de risco — funcionalidade de demonstração.', 'info')">+ Novo tipo</button>
+    </div>
+    <div class="card panel-pad" style="margin-bottom:20px;">
+      <div class="chip-row" style="margin:0;">
+        ${RISK_TYPES.map(t=>`<span class="badge badge-outline" style="padding:8px 14px;font-size:12.5px;">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="section-title"><h3>Setores / áreas cadastradas</h3>
+      <button class="btn btn-sm" onclick="showToast('Cadastro de nova área/setor — funcionalidade de demonstração.', 'info')">+ Nova área</button>
+    </div>
+    <div class="card panel-pad" style="margin-bottom:20px;">
+      <div class="chip-row" style="margin:0;">
+        ${areas.map(a=>`<span class="badge badge-outline" style="padding:8px 14px;font-size:12.5px;">${a}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="section-title"><h3>Sensores monitorados</h3></div>
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Sensor</th><th>Área</th><th>Responsável</th><th>Limites (Atenção / Anormal / Crítico)</th><th>Ações</th></tr></thead>
+        <tbody>${state.sensors.map(s=>`<tr>
+          <td data-label="Sensor">${s.name}</td>
+          <td data-label="Área">${s.area}</td>
+          <td data-label="Responsável">${s.responsible}</td>
+          <td data-label="Limites">${s.limits.atencao} / ${s.limits.anormal} / ${s.limits.critico} ${s.unit}</td>
+          <td data-label="Ações"><button class="btn btn-sm" onclick="showToast('Edição de limites do sensor — funcionalidade de demonstração.', 'info')">Editar</button></td>
+        </tr>`).join('')}</tbody>
+      </table>
+      </div>
+    </div>`;
+}
+
+function renderAdminUsuarios(){
+  return `
+    <div class="form-actions" style="justify-content:flex-end;margin-bottom:14px;">
+      <button class="btn btn-maroon btn-sm" style="flex:none;" onclick="abrirNovoUsuario()">+ Novo usuário</button>
+    </div>
+    ${state.userFormOpen ? renderUserForm() : ''}
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Área</th><th>Ações</th></tr></thead>
+        <tbody>${DEMO_USERS.map(u=>`<tr>
+          <td data-label="Nome">${u.name}</td>
+          <td class="mono" data-label="E-mail">${u.email}</td>
+          <td data-label="Perfil">${ROLE_LABELS[u.role]}</td>
+          <td data-label="Área">${u.area}</td>
+          <td data-label="Ações"><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="btn btn-sm" onclick="abrirEditarUsuario('${u.id}')">Editar</button><button class="btn btn-sm" onclick="removerUsuario('${u.id}')">Remover</button></div></td>
+        </tr>`).join('')}</tbody>
+      </table>
+      </div>
+    </div>`;
+}
+
+function renderAdminLogs(){
+  return `
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Data/Hora</th><th>Usuário</th><th>Perfil</th><th>Ação</th><th>Detalhes</th></tr></thead>
+        <tbody>${state.auditLog.map(l=>`<tr>
+          <td data-label="Data/Hora">${l.timestamp}</td>
+          <td data-label="Usuário">${l.user}</td>
+          <td data-label="Perfil">${l.role}</td>
+          <td data-label="Ação">${l.action}</td>
+          <td data-label="Detalhes">${l.details}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+      </div>
+      ${state.auditLog.length===0 ? '<div class="empty-state">Nenhuma alteração registrada ainda nesta sessão.</div>' : ''}
+    </div>`;
+}
+
+function renderAdminLogins(){
+  return `
+    <div class="card panel-pad">
+      <div class="table-scroll">
+      <table class="rtable">
+        <thead><tr><th>Data/Hora</th><th>Usuário</th><th>Perfil</th><th>E-mail</th></tr></thead>
+        <tbody>${state.loginLog.map(l=>`<tr>
+          <td data-label="Data/Hora">${l.timestamp}</td>
+          <td data-label="Usuário">${l.user}</td>
+          <td data-label="Perfil">${l.role}</td>
+          <td class="mono" data-label="E-mail">${l.email}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+      </div>
+      ${state.loginLog.length===0 ? '<div class="empty-state">Nenhum login registrado ainda nesta sessão.</div>' : ''}
+    </div>`;
+}
+
+function abrirNovoUsuario(){
+  state.userFormOpen = true;
+  state.userFormMode = 'new';
+  state.userFormId = null;
+  state.userFormDraft = {name:'', email:'', role:'lideranca', area:''};
+  render();
+  setTimeout(()=>{ const i=document.getElementById('uf-name'); if(i) i.focus(); }, 30);
+}
+function abrirEditarUsuario(id){
+  const u = DEMO_USERS.find(x=>x.id===id);
+  if(!u) return;
+  state.userFormOpen = true;
+  state.userFormMode = 'edit';
+  state.userFormId = id;
+  state.userFormDraft = {name:u.name, email:u.email, role:u.role, area:u.area};
+  render();
+}
+function cancelarUsuarioForm(){
+  state.userFormOpen = false;
+  state.userFormId = null;
+  render();
+}
+function salvarUsuario(){
+  const name = document.getElementById('uf-name').value.trim();
+  const email = document.getElementById('uf-email').value.trim();
+  const role = document.getElementById('uf-role').value;
+  const area = document.getElementById('uf-area').value.trim();
+  if(!name || !email || !area){
+    state.userFormError = 'Preencha nome, e-mail e área.';
+    render();
+    return;
+  }
+  const initials = name.trim().split(/\s+/).slice(0,2).map(p=>p[0]).join('').toUpperCase();
+  if(state.userFormMode==='edit'){
+    const u = DEMO_USERS.find(x=>x.id===state.userFormId);
+    Object.assign(u, {name, email, role, area, initials});
+    showToast('Usuário '+name+' atualizado.', 'sucesso');
+    logAudit('Usuário editado', name+' ('+ROLE_LABELS[role]+', '+area+')');
+  } else {
+    DEMO_USERS.push({id:'u'+(DEMO_USERS.length+1)+'-'+Date.now().toString().slice(-4), name, email, role, area, initials});
+    showToast('Usuário '+name+' cadastrado.', 'sucesso');
+    logAudit('Usuário cadastrado', name+' ('+ROLE_LABELS[role]+', '+area+')');
+  }
+  state.userFormOpen = false;
+  state.userFormId = null;
+  state.userFormError = '';
+  render();
+}
+function removerUsuario(id){
+  const u = DEMO_USERS.find(x=>x.id===id);
+  if(!u) return;
+  if(u.id===state.user.id){ showToast('Você não pode remover o usuário com a sessão ativa.', 'alerta'); return; }
+  const idx = DEMO_USERS.findIndex(x=>x.id===id);
+  DEMO_USERS.splice(idx,1);
+  showToast('Usuário '+u.name+' removido.', 'alerta');
+  logAudit('Usuário removido', u.name+' ('+ROLE_LABELS[u.role]+')');
+  render();
+}
+
+function renderUserForm(){
+  const d = state.userFormDraft;
+  return `
+    <div class="card panel-pad" style="margin-bottom:16px;">
+      <div class="section-title"><h3>${state.userFormMode==='edit' ? 'Editar usuário' : 'Novo usuário'}</h3></div>
+      <div class="form-section form-grid-2">
+        <div><label class="field-label">Nome</label><input id="uf-name" type="text" value="${d.name}"></div>
+        <div><label class="field-label">E-mail</label><input id="uf-email" type="text" value="${d.email}"></div>
+      </div>
+      <div class="form-section form-grid-2">
+        <div><label class="field-label">Perfil</label>
+          <select id="uf-role">
+            ${Object.keys(ROLE_LABELS).map(r=>`<option value="${r}" ${d.role===r?'selected':''}>${ROLE_LABELS[r]}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="field-label">Área / setor</label><input id="uf-area" type="text" value="${d.area}" placeholder="Ex.: Produção — Reatores"></div>
+      </div>
+      ${state.userFormError ? '<div class="field-error">'+state.userFormError+'</div>' : ''}
+      <div class="form-actions">
+        <button class="btn" onclick="cancelarUsuarioForm()">Cancelar</button>
+        <button class="btn btn-maroon" onclick="salvarUsuario()">${state.userFormMode==='edit' ? 'Salvar alterações' : 'Cadastrar usuário'}</button>
+      </div>
+    </div>`;
+}
+
+/* ============================= PWA (instalável como app) =============================
+   Manifesto e ícone gerados em runtime via Blob — mantém o app em um único arquivo HTML,
+   sem depender de arquivos externos, mas ainda oferecendo "Adicionar à tela inicial" com
+   ícone e nome corretos. Não registra service worker (exigiria arquivos servidos por HTTP
+   com o mesmo escopo, o que não se aplica a um arquivo aberto localmente) — funciona como
+   atalho instalável, não como app 100% offline. */
+(function setupPWA(){
+  try{
+    const iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'+
+      '<rect width="100" height="100" rx="22" fill="#7d2438"/>'+
+      '<path d="M50 18 L74 27 V47 C74 64 63 76 50 82 C37 76 26 64 26 47 V27 Z" fill="none" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>'+
+      '</svg>';
+    const iconUrl = 'data:image/svg+xml,'+encodeURIComponent(iconSvg);
+
+    const appleIcon = document.createElement('link');
+    appleIcon.rel = 'apple-touch-icon';
+    appleIcon.href = iconUrl;
+    document.head.appendChild(appleIcon);
+
+    const manifest = {
+      name: 'PRECOR — Prevenção, Comunicação e Resposta a Riscos Industriais',
+      short_name: 'PRECOR',
+      start_url: '.',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#7d2438',
+      icons: [{ src: iconUrl, sizes: '100x100', type: 'image/svg+xml', purpose: 'any' }]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = URL.createObjectURL(manifestBlob);
+    document.head.appendChild(manifestLink);
+  }catch(e){ /* navegador sem suporte — app continua funcionando normalmente */ }
+})();
+
+/* ============================= INIT ============================= */
+render();
+</script>
+</body>
+</html>
