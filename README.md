@@ -7,6 +7,8 @@
 
 *Projeto Integrador I*
 
+### 🔗 [Acessar o protótipo online](https://sabrinarodrigues-crypto.github.io/Precor/)
+
 </div>
 
 ---
@@ -101,13 +103,13 @@ O sistema possui **5 perfis** com permissões e visões distintas, cada uma esco
 
 ---
 
-## ▶️ Como executar
+> 💡 O link acima usa GitHub Pages e abre direto no navegador (celular ou computador), sem precisar baixar nada. *(Se ainda não estiver ativo, confira em Settings → Pages do repositório se a publicação já foi concluída — pode levar 1-2 minutos após a configuração.)*
+
+## ▶️ Como executar localmente (alternativa)
 
 1. Baixe o arquivo `precor.html`
-2. Dê duplo clique nele (ou clique direito → Abrir com → seu navegador)
+2. Abra-o com um navegador (Chrome, Safari, Edge) — em celular, use "Abrir com" e escolha o navegador, não o visualizador de arquivos padrão
 3. Pronto — não precisa de servidor, instalação ou internet (exceto para carregar as fontes do Google Fonts)
-
-Também é possível publicar via **GitHub Pages** para acesso por link (veja seção abaixo).
 
 ### Usuários de demonstração
 
